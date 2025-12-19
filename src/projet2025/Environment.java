@@ -9,6 +9,9 @@ public class Environment {
     int baseX;
     int baseY;
 
+    public static final double RADIATION_FORBIDDEN = 3.0; // μSv/h
+    public static final double RADIATION_LIMITED  = 1.5; // μSv/h
+
     public Environment(int width, int height, int baseX, int baseY) {
         this.width = width;
         this.height = height;
@@ -40,6 +43,14 @@ public class Environment {
     public void markExplored(int x, int y){
         Cell c = getCell(x, y);
         c.explored = true;
+    }
+
+    public boolean isForbidden(Cell c) {
+        return c.radiationLevel > RADIATION_FORBIDDEN;
+    }
+
+    public boolean isLimited(Cell c) {
+        return c.radiationLevel > RADIATION_LIMITED && c.radiationLevel <= RADIATION_FORBIDDEN;
     }
 
 

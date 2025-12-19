@@ -27,7 +27,6 @@ public class Cell {
         this.cowHandled = false;
 
         this.hasDebris = false;
-
     }
 
 
