@@ -4,10 +4,21 @@ public class Drone {
 	
 	int id;         //droneID
     int x, y;       //positionnement
+	Environment environment;
 
-	public Drone(int id) {
+	public Drone(int id, Environment environment) {
 		this.id = id;
-		this.x = 0; this.y = 0;
+		this.environment = environment;
+		this.x = environment.baseX; //pisitionnement initialle est base
+        this.y = environment.baseY;
 	}
+
+	public int getBaseX() {
+        return environment.baseX;
+    }
+
+    public int getBaseY() {
+        return environment.baseY;
+    }
 
 }
