@@ -13,14 +13,15 @@ public class Cell {
    
     boolean hasDebris;       //Présence de débris (pour l’interface utilisateur, pour la prise de décision au centre)
     
-    
+    boolean isBase; 
+
     public Cell(int x, int y){
         this.x = x;
         this.y = y;
 
         this.explored = false;
 
-        this.radiationLevel = 0.0;
+        this.radiationLevel = 0.00;
 
         this.hasCow = false;
     

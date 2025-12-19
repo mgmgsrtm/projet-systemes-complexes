@@ -9,15 +9,15 @@ public class Environment {
     int baseX;
     int baseY;
 
-    public static final double RADIATION_FORBIDDEN = 3.0; // μSv/h
-    public static final double RADIATION_LIMITED  = 1.0; // μSv/h
+    public static final double RADIATION_FORBIDDEN = 3.0; // si 3+μSv/h drone ne peut pas entrer
+    public static final double RADIATION_LIMITED  = 1.0; // si 1+μSv/h drone peut entrer mais traitement de caw avec signalement
 
-    public Environment(int width, int height, int baseX, int baseY) {
+    public Environment(int width, int height) {
         this.width = width;
         this.height = height;
 
-        this.baseX = baseX;
-        this.baseY = baseY;
+        this.baseX = 0;
+        this.baseY = 0;
 
         grid = new Cell[width][height];
     
@@ -53,37 +53,62 @@ public class Environment {
         return c.radiationLevel > RADIATION_LIMITED && c.radiationLevel <= RADIATION_FORBIDDEN;
     }
 
+    public boolean isBase(int x, int y) {
+        return x == baseX && y == baseY;
+    }
+
 
     //radiationLevel　
     //hasCow
     //hasDebris
     //emplacement initial
     public void initializeEnvironment() {
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) { // d'abord initialiser entierement en radiationLevel au dessous de 1 
             for (int y = 0; y < height; y++) {
                 Cell c = grid[x][y];
-
+                if (c.isBase) continue; 
                 c.radiationLevel = 0.00; // 0.0 ～ 1.0
-                c.hasDebris = Math.random() < 0.1; //10% de possibilite true
-                c.hasCow = Math.random() < 0.05;  //5% de possibilite true
+                c.hasDebris = Math.random() < 0.1; // cell a 10% de possibilite d'avoir debris
+                c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un caw
                 c.cowHandled = false;
             }
         }
-        int nbHotspot = 2 + (int)(Math.random()* 2);  // il y a  2 ou 3 hotspot
+        int nbHotspot = 4 + (int)(Math.random()* 2);  // il y a 4 ou 5 hotspot par defaut
 
         for(int i = 0; i < nbHotspot; i ++ ){
-            int hotspotX = (int)(Math.random() * width);
-            int hotspotY = (int)(Math.random() * height);
+            generateHotspot();
+        }  
+        setControlCentre();
+    }
+
+
+    
+    public void generateHotspot(){
+        int hotspotX, hotspotY;
+            do {
+                hotspotX = (int)(Math.random() * width);
+                hotspotY = (int)(Math.random() * height);
+            } while (Math.abs(hotspotX - baseX) <= 1 && Math.abs(hotspotY - baseY) <= 1);
 
             grid[hotspotX][hotspotY].radiationLevel = 4.5;
 
-            for (int dx = -1; dx <= 1; dx++) {
+            for (int dx = -1; dx <= 1; dx++) { //3*3 autour de hotspot est radiationLevet 1~3 qui est niveau "entry limited"
                 for (int dy = -1; dy <= 1; dy++) {
                     if (dx == 0 && dy == 0) continue;
-                    setIfInside(hotspotX + dx, hotspotY + dy, entryLimitedZone());
+                    setIfInside(hotspotX + dx, hotspotY + dy, setEntryLimitedZone());
                 }
             }
-        }       
+    }
+
+
+
+    private void setControlCentre(){
+        Cell base = grid[baseX][baseY];
+        base.isBase = true;
+        base.radiationLevel = 0.0;
+        base.hasCow = false;
+        base.hasDebris = false;
+        base.explored = true;
     }
 
     private void setIfInside(int x, int y, double value) {
@@ -93,13 +118,15 @@ public class Environment {
         }
     }
 
-    private double entryLimitedZone() {
+    private double setEntryLimitedZone() {
         return 1.0 + Math.random() * 2.0; // 1.0 ～ 3.0
     }
 
     //l’évolution de l’environnement
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
     public void updateEnvironment() {}
+
+
 
 
     public void printEnvironment() {
@@ -111,7 +138,6 @@ public class Environment {
 	    }
     }
     
-    
     public void printRadLevelMap() {
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -119,6 +145,7 @@ public class Environment {
             }
             System.out.println();
     	}
+    	System.out.println();
     }
     
     public void printIfCowMap() {
@@ -134,17 +161,47 @@ public class Environment {
             }
             System.out.println();
     	}
+    	System.out.println();
     }
     
+    public void printMap() {
+    	for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+            	Cell c = grid[x][y];
+		    	if (c.isBase) {
+		    	    System.out.print("B|");
+		    	} else if (c.radiationLevel > RADIATION_FORBIDDEN) {
+		    		if (c.hasCow) {
+		    	        System.out.print("!|");
+		    	    } else {
+		    	        System.out.print("X|");
+		    	    }
+		    	} else if (c.radiationLevel > RADIATION_LIMITED) {
+		    	    if (c.hasCow) {
+		    	        System.out.print("c|"); // cow + limited
+		    	    } else {
+		    	        System.out.print("~|");
+		    	    }
+		    	} else if (c.hasCow) {
+		    	    System.out.print("C|");   // safe cow
+		    	} else {
+		    	    System.out.print(" |");
+		    	}
+            }
+            System.out.println();
+    	}
+    	System.out.println();
+    }
 
 
     public static void main(String[] args) {
 
-        Environment env = new Environment(20, 20, 1, 1);
+        Environment env = new Environment(20, 20);
         env.initializeEnvironment();
         env.printEnvironment();
         env.printRadLevelMap();
         env.printIfCowMap();
+        env.printMap();
     }
     
     

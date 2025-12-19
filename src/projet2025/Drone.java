@@ -4,13 +4,17 @@ public class Drone {
 	
 	int id;         //droneID
     int x, y;       //positionnement
+	int status;
 	Environment environment;
 	ControlCenter controlCenter;
+
+	//status  1: actif, 2: recharge, 3: en analyse
 
 	public Drone(int id, Environment environment, ControlCenter controlCenter) {
 		this.id = id;
 		this.environment = environment;
 		this.controlCenter = controlCenter;
+		status = 1;
 		this.x = environment.baseX; //pisitionnement initialle est base
         this.y = environment.baseY;
 	}

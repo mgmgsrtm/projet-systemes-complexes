@@ -18,10 +18,12 @@ public class ControlCenter {
 
     public void reportCow(int droneId, int x, int y, double radiation) {
         totalCowsDetected++;
+        boolean dangerous = radiation > 1;
         eventLog.add(
             "Drone " + droneId +
             " detected cow at (" + x + "," + y + ")" +
-            " radiation=" + radiation
+            " radiation=" + radiation +
+            (dangerous ? " [DANGEROUS]" : "")
         );
     }
 }
