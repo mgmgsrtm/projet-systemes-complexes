@@ -77,19 +77,53 @@ public class Environment {
 
 
     public void printEnvironment() {
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            System.out.print(grid[x][y] + " | ");
-        }
-        System.out.println();
+	    for (int y = 0; y < height; y++) {
+	        for (int x = 0; x < width; x++) {
+	            System.out.println(grid[x][y] + " | ");
+	        }
+	        System.out.println();
+	    }
     }
-}
+    
+    
+    public void printRadLevelMap() {
+    	for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+            	System.out.print(String.format("%.2f", grid[x][y].radiationLevel) + " ");
+            }
+            System.out.println();
+    	}
+    }
+    
+    public void printIfCowMap() {
+    	String c;
+    	for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+            	if (grid[x][y].hasCow) {
+            		c = "C";
+            	}else {
+            		c = " ";
+            	}
+            	System.out.print(c + "|");
+            }
+            System.out.println();
+    	}
+    }
+    
+
 
     public static void main(String[] args) {
 
         Environment env = new Environment(20, 20, 1, 1);
         env.initializeEnvironment();
         env.printEnvironment();
+        env.printRadLevelMap();
+        env.printIfCowMap();
     }
+    
+    
+    
+    
+   
     
 }
