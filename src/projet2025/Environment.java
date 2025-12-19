@@ -68,24 +68,22 @@ public class Environment {
                 c.hasCow = Math.random() < 0.05;  //5% de possibilite true
                 c.cowHandled = false;
             }
-
-            int nbHotspot = 2 + (int)(Math.random()* 2);  // il y a  2 ou 3 hotspot
-
-                for(int i = 0; i < nbHotspot; i ++ ){
-                    int hotspotX = (int)(Math.random() * width);
-                    int hotspotY = (int)(Math.random() * height);
-
-                    grid[hotspotX][hotspotY].radiationLevel = 4.5;
-
-                    for (int dx = -2; dx <= 2; dx++) {
-                        for (int dy = -2; dy <= 2; dy++) {
-                            if (dx == 0 && dy == 0) continue;
-                            setIfInside(hotspotX + dx, hotspotY + dy, entryLimitedZone());
-                        }
-                    }
-                }
-            
         }
+        int nbHotspot = 2 + (int)(Math.random()* 2);  // il y a  2 ou 3 hotspot
+
+        for(int i = 0; i < nbHotspot; i ++ ){
+            int hotspotX = (int)(Math.random() * width);
+            int hotspotY = (int)(Math.random() * height);
+
+            grid[hotspotX][hotspotY].radiationLevel = 4.5;
+
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (dx == 0 && dy == 0) continue;
+                    setIfInside(hotspotX + dx, hotspotY + dy, entryLimitedZone());
+                }
+            }
+        }       
     }
 
     private void setIfInside(int x, int y, double value) {
