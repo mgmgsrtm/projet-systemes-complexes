@@ -58,15 +58,38 @@ public class Environment {
     //hasCow
     //hasDebris
     //emplacement initial
-    public void initializeHazards() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-            }
+    public void initializeEnvironment() {
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            Cell c = grid[x][y];
+
+            c.radiationLevel = Math.random() * 5.0;  //0〜5マイクロシーベルト
+            c.hasDebris = Math.random() < 0.1; //10% de possibilite true
+            c.hasCow = Math.random() < 0.05;  //5% de possibilite true
+            c.cowHandled = false;
         }
     }
+}
 
     //l’évolution de l’environnement
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
     public void updateEnvironment() {}
 
+
+    public void printEnvironment() {
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            System.out.print(grid[x][y] + " | ");
+        }
+        System.out.println();
+    }
+}
+
+    public static void main(String[] args) {
+
+        Environment env = new Environment(20, 20, 1, 1);
+        env.initializeEnvironment();
+        env.printEnvironment();
+    }
+    
 }

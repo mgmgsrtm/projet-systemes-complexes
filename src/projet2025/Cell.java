@@ -30,4 +30,15 @@ public class Cell {
     }
 
 
+    @Override
+    public String toString() {
+        return "Cell(" + x + "," + y + ")"
+            + " rad=" + String.format("%.2f", radiationLevel)
+            + " cow=" + hasCow
+            + " handled=" + cowHandled
+            + " debris=" + hasDebris
+            + " explored=" + explored;
+    }
+
+
 }
