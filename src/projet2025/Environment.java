@@ -10,7 +10,7 @@ public class Environment {
     int baseY;
 
     public static final double RADIATION_FORBIDDEN = 3.0; // μSv/h
-    public static final double RADIATION_LIMITED  = 1.5; // μSv/h
+    public static final double RADIATION_LIMITED  = 1.0; // μSv/h
 
     public Environment(int width, int height, int baseX, int baseY) {
         this.width = width;
@@ -59,17 +59,45 @@ public class Environment {
     //hasDebris
     //emplacement initial
     public void initializeEnvironment() {
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            Cell c = grid[x][y];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell c = grid[x][y];
 
-            c.radiationLevel = Math.random() * 5.0;  //0〜5マイクロシーベルト
-            c.hasDebris = Math.random() < 0.1; //10% de possibilite true
-            c.hasCow = Math.random() < 0.05;  //5% de possibilite true
-            c.cowHandled = false;
+                c.radiationLevel = 0.00; // 0.0 ～ 1.0
+                c.hasDebris = Math.random() < 0.1; //10% de possibilite true
+                c.hasCow = Math.random() < 0.05;  //5% de possibilite true
+                c.cowHandled = false;
+            }
+
+            int nbHotspot = 2 + (int)(Math.random()* 2);  // il y a  2 ou 3 hotspot
+
+                for(int i = 0; i < nbHotspot; i ++ ){
+                    int hotspotX = (int)(Math.random() * width);
+                    int hotspotY = (int)(Math.random() * height);
+
+                    grid[hotspotX][hotspotY].radiationLevel = 4.5;
+
+                    for (int dx = -2; dx <= 2; dx++) {
+                        for (int dy = -2; dy <= 2; dy++) {
+                            if (dx == 0 && dy == 0) continue;
+                            setIfInside(hotspotX + dx, hotspotY + dy, entryLimitedZone());
+                        }
+                    }
+                }
+            
         }
     }
-}
+
+    private void setIfInside(int x, int y, double value) {
+        if (isInside(x, y)) {
+            // choir le radiationLevel qui est plus haut
+            grid[x][y].radiationLevel = Math.max(grid[x][y].radiationLevel, value);
+        }
+    }
+
+    private double entryLimitedZone() {
+        return 1.0 + Math.random() * 2.0; // 1.0 ～ 3.0
+    }
 
     //l’évolution de l’environnement
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
@@ -124,6 +152,5 @@ public class Environment {
     
     
     
-   
     
 }
