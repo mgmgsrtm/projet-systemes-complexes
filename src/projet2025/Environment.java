@@ -204,6 +204,23 @@ public class Environment {
     	}
     	System.out.println();
     }
+    
+    
+    public void printDrone(Drone d) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+
+                if (x == d.x && y == d.y) {
+                    System.out.print("D|");   // Drone
+                } else {
+		    	    System.out.print(" |");
+		    	}
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+        
 
 
     public static void main(String[] args) {
@@ -223,7 +240,14 @@ public class Environment {
             env.updateEnvironment();
 
             if (t % 10 == 0) {
-                env.printMap();
+                env.printRadLevelMap();
+                env.printDrone(d1);
+            }
+            
+            try {
+                Thread.sleep(1000); // 1秒待つ（＝実時間で1秒）
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
