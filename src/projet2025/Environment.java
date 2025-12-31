@@ -12,12 +12,16 @@ public class Environment {
     public static final double RADIATION_FORBIDDEN = 3.0; // si 3+μSv/h drone ne peut pas entrer
     public static final double RADIATION_LIMITED  = 1.0; // si 1+μSv/h drone peut entrer mais traitement de caw avec signalement
 
+    int timeSinceLastHotspot;
+    
     public Environment(int width, int height) {
         this.width = width;
         this.height = height;
 
         this.baseX = 0;
         this.baseY = 0;
+        
+        this.timeSinceLastHotspot = 0;
 
         grid = new Cell[width][height];
     
@@ -124,8 +128,9 @@ public class Environment {
 
     //l’évolution de l’environnement
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
+    
     public void updateEnvironment() {
-        double halfLife = 60.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
+        double halfLife = 90.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
         double decay = Math.pow(0.5, 1.0 / halfLife); //calcul du facteur de décroissance correspondant à une seconde
 
         //début de la boucle parcourant toute la grille
@@ -135,6 +140,15 @@ public class Environment {
                 if (c.isBase) continue; //la cellule de la base doit toujours avoir un niveau de radiation nul
                 c.radiationLevel *= decay; //diminution du niveau de radiation pour une seconde
             }
+        }
+        timeSinceLastHotspot++;
+        if (timeSinceLastHotspot >= 60) { // apres 60 secondes
+            if (Math.random() < 0.75) {    // 75% de chance
+                generateHotspot();
+                System.out.println("New hotspot!");
+            }
+            timeSinceLastHotspot = 0;
+            // ちょうどいる cell に hotspot が出現したら？後で「緊急退避」を追加する
         }
     }
 
