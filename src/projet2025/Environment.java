@@ -176,13 +176,15 @@ public class Environment {
     	System.out.println();
     }
     
-    public void printMap() {
+    public void printMap(Drone d) {
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
             	Cell c = grid[x][y];
 		    	if (c.isBase) {
 		    	    System.out.print("B|");
-		    	} else if (c.radiationLevel > RADIATION_FORBIDDEN) {
+		    	} else if (x == d.x && y == d.y) {
+                    System.out.print("D|");   // Drone
+                } else if (c.radiationLevel > RADIATION_FORBIDDEN) {
 		    		if (c.hasCow) {
 		    	        System.out.print("!|");
 		    	    } else {
@@ -205,21 +207,6 @@ public class Environment {
     	System.out.println();
     }
     
-    
-    public void printDrone(Drone d) {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-
-                if (x == d.x && y == d.y) {
-                    System.out.print("D|");   // Drone
-                } else {
-		    	    System.out.print(" |");
-		    	}
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
         
 
 
@@ -230,7 +217,6 @@ public class Environment {
         env.printEnvironment();
         env.printRadLevelMap();
         env.printIfCowMap();
-        env.printMap();
 
         ControlCenter cc = new ControlCenter();
         Drone d1 = new Drone(1, env, cc);
@@ -241,7 +227,7 @@ public class Environment {
 
             if (t % 10 == 0) {
                 env.printRadLevelMap();
-                env.printDrone(d1);
+                env.printMap(d1);
             }
             
             try {
