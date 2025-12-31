@@ -214,6 +214,18 @@ public class Environment {
         env.printRadLevelMap();
         env.printIfCowMap();
         env.printMap();
+
+        ControlCenter cc = new ControlCenter();
+        Drone d1 = new Drone(1, env, cc);
+
+        for (int t = 0; t < 300; t++) { // 300 秒
+            d1.step();
+            env.updateEnvironment();
+
+            if (t % 10 == 0) {
+                env.printMap();
+            }
+        }
     }
     
     

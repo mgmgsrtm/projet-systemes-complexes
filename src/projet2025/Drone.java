@@ -38,7 +38,11 @@ public class Drone {
 		//mise à jour de la position actuelle du drone
 		x = nextx;
 		y = nexty;
-		environment.markExplored(x, y);
+		if (!next.explored) {
+			environment.markExplored(x, y);
+		}
+		analyseCell(next);
+
 	}
 
 
