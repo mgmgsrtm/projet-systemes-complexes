@@ -4,17 +4,21 @@ public class Drone {
 	
 	int id;         //droneID
     int x, y;       //positionnement
-	int status;
 	Environment environment;
 	ControlCenter controlCenter;
-
-	//status  1: actif, 2: recharge, 3: en analyse
+	DroneState state = DroneState.MOVING;
+    int analyseRemainingTime = 0;
+	
+	enum DroneState {
+	    MOVING,
+	    ANALYSING,
+	    RETURNING
+	}
 
 	public Drone(int id, Environment environment, ControlCenter controlCenter) {
 		this.id = id;
 		this.environment = environment;
 		this.controlCenter = controlCenter;
-		status = 1;
 		this.x = environment.baseX; //pisitionnement initialle est base
         this.y = environment.baseY;
 	}
@@ -26,8 +30,18 @@ public class Drone {
     public int getBaseY() {
         return environment.baseY;
     }
+    
 
 	public void step() {
+		
+		if (state == DroneState.ANALYSING) {
+	        analyseRemainingTime--;
+
+	        if (analyseRemainingTime <= 0) {
+	            finishAnalyse();
+	        }
+	        return; // analyse中は移動しない
+	    }
 		//determination des coordonnées suivantes (nextx, nexty)
 		int nextx = x + (int)(Math.random() * 3) - 1;
 		int nexty = y + (int)(Math.random() * 3) - 1;
@@ -38,10 +52,10 @@ public class Drone {
 		//mise à jour de la position actuelle du drone
 		x = nextx;
 		y = nexty;
-		if (!next.explored) {
-			environment.markExplored(x, y);
-		}
-		analyseCell(next);
+		exploreCell(next);
+	    if (next.hasCow && !next.cowHandled) {
+	        startAnalyse(next);
+	    }
 
 	}
 
@@ -49,13 +63,26 @@ public class Drone {
 	public void exploreCell(Cell cell){
 		//TODO
 		//voir si les cells autour sont explorable ou non
+		if (!cell.explored) {
+	        cell.explored = true;
+	        controlCenter.totalCellsExplored++;
+	    }
+		
 	}
+	
+	public void startAnalyse(Cell cell) {
+        state = DroneState.ANALYSING;
+        analyseRemainingTime = 10; // 10 secondes
+    }
 
-	public void analyseCell(Cell cell){
-		if (cell.hasCow && !cell.cowHandled) {
-			controlCenter.reportCow(id, x, y, cell.radiationLevel);
-			cell.cowHandled = true;
-		}
+	private void finishAnalyse() {
+	    Cell c = environment.getCell(x, y);
+
+	    if (c.hasCow && !c.cowHandled) {
+	        controlCenter.reportCow(id, x, y, c.radiationLevel);
+	        c.cowHandled = true;
+	    }
+	    state = DroneState.MOVING;
 	}
 
 }

@@ -184,7 +184,9 @@ public class Environment {
 		    	    System.out.print("B|");
 		    	} else if (x == d.x && y == d.y) {
                     System.out.print("D|");   // Drone
-                } else if (c.radiationLevel > RADIATION_FORBIDDEN) {
+                } else if (c.explored) {
+	                System.out.print(".|");   //探索済みはすべて「.」
+	            }else if (c.radiationLevel > RADIATION_FORBIDDEN) {
 		    		if (c.hasCow) {
 		    	        System.out.print("!|");
 		    	    } else {
@@ -223,11 +225,14 @@ public class Environment {
 
         for (int t = 0; t < 300; t++) { // 300 秒
             d1.step();
+            System.out.println(d1.state);
             env.updateEnvironment();
 
-            if (t % 10 == 0) {
+            if (t % 10 == 0) { //環境更新とドローンの移動は毎秒行われているが、10秒に1回だけ表示
                 env.printRadLevelMap();
                 env.printMap(d1);
+                System.out.println(cc.totalCellsExplored);
+                System.out.println(cc.totalCowsDetected);
             }
             
             try {
