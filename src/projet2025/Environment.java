@@ -124,7 +124,19 @@ public class Environment {
 
     //l’évolution de l’environnement
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
-    public void updateEnvironment() {}
+    public void updateEnvironment() {
+        double halfLife = 60.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
+        double decay = Math.pow(0.5, 1.0 / halfLife); //calcul du facteur de décroissance correspondant à une seconde
+
+        //début de la boucle parcourant toute la grille
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell c = grid[x][y];
+                if (c.isBase) continue; //la cellule de la base doit toujours avoir un niveau de radiation nul
+                c.radiationLevel *= decay; //diminution du niveau de radiation pour une seconde
+            }
+        }
+    }
 
 
 
