@@ -27,6 +27,20 @@ public class Drone {
         return environment.baseY;
     }
 
+	public void step() {
+		//determination des coordonnées suivantes (nextx, nexty)
+		int nextx = x + (int)(Math.random() * 3) - 1;
+		int nexty = y + (int)(Math.random() * 3) - 1;
+
+		if (!environment.isInside(nextx, nexty)) return; //le pas de simulation est annulé si la coordonnée suivante en dehors de la grille
+		Cell next = environment.getCell(nextx, nexty);
+		if (environment.isForbidden(next)) return; //niveau de radiation trop élevé, le déplacement est annulé
+		//mise à jour de la position actuelle du drone
+		x = nextx;
+		y = nexty;
+		environment.markExplored(x, y);
+	}
+
 
 	public void exploreCell(Cell cell){
 		//TODO
