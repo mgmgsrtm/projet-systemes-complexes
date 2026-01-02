@@ -136,8 +136,19 @@ public class Drone {
 
 	// choirie un cell pour privilégier le déplacement vers le cell non exploré
 	private Cell chooseCextCell(List<Cell> neighbors) {
-		//TODO 
-		return null;
+		List<Cell> notExplored = new ArrayList<>();
+		for (Cell c: neighbors){
+			if(!c.explored){
+				notExplored.add(c);
+			}
+		}
+		// si la liste n’est pas vide, le drone y déplace
+		if (!notExplored.isEmpty()){
+			return notExplored.get((int)(Math.random() * notExplored.size()));
+		}
+
+		//si la liste est vide, une cellule déjà explorée est choisie aléatoirement
+		return neighbors.get((int)(Math.random() * neighbors.size()));
 	}
 
 }
