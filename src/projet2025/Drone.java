@@ -1,5 +1,8 @@
 package projet2025;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Drone {
 	
 	int id;         //droneID
@@ -61,19 +64,26 @@ public class Drone {
 	        }
 	        return; // analyse中は移動しない
 	    }
-		//determination des coordonnées suivantes (nextx, nexty)
-		int nextx = x + (int)(Math.random() * 3) - 1;
-		int nexty = y + (int)(Math.random() * 3) - 1;
 
-		if (!environment.isInside(nextx, nexty)) return; //le pas de simulation est annulé si la coordonnée suivante en dehors de la grille
-		Cell next = environment.getCell(nextx, nexty);
-		if (environment.isForbidden(next)) return; //niveau de radiation trop élevé, le déplacement est annulé
-		//mise à jour de la position actuelle du drone
-		x = nextx;
-		y = nexty;
-		exploreCell(next);
-	    if (next.hasCow && !next.cowHandled) {
-	        startAnalyse(next);
+		//avancer ver une cellule non explorée
+		List<Cell> neighbors = getNeighbors(); // avoir la liste des cellules voisines accessibles
+		Cell nextc = chooseCextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
+
+
+		// //determination des coordonnées suivantes (nextx, nexty)
+		// int nextx = x + (int)(Math.random() * 3) - 1;
+		// int nexty = y + (int)(Math.random() * 3) - 1;
+
+		// if (!environment.isInside(nextx, nexty)) return; //le pas de simulation est annulé si la coordonnée suivante en dehors de la grille
+		// Cell next = environment.getCell(nextx, nexty);
+		// if (environment.isForbidden(next)) return; //niveau de radiation trop élevé, le déplacement est annulé
+		// //mise à jour de la position actuelle du drone
+
+		x = nextc.x;
+		y = nextc.y;
+		exploreCell(nextc);
+	    if (nextc.hasCow && !nextc.cowHandled) {
+	        startAnalyse(nextc);
 	    }
 
 	}
@@ -102,6 +112,32 @@ public class Drone {
 	        c.cowHandled = true;
 	    }
 	    state = DroneState.MOVING;
+	}
+
+	private List<Cell> getNeighbors() {
+		List<Cell> neighbors = new ArrayList<>();
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				if (dx == 0 && dy == 0) continue;
+				// stocke le cell voisin dans une liste pour lutiliser dans step()
+				int nx = x + dx;
+				int ny = y + dy;
+
+				if (!environment.isInside(nx, ny)) continue;
+
+				Cell c = environment.getCell(nx, ny);
+				if (environment.isForbidden(c)) continue;
+
+				neighbors.add(c);
+			}
+		}
+		return neighbors;
+	}
+
+	// choirie un cell pour privilégier le déplacement vers le cell non exploré
+	private Cell chooseCextCell(List<Cell> neighbors) {
+		//TODO 
+		return null;
 	}
 
 }
