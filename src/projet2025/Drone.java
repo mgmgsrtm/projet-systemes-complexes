@@ -6,7 +6,7 @@ public class Drone {
     int x, y;       //positionnement
 	Environment environment;
 	ControlCenter controlCenter;
-	DroneState state = DroneState.MOVING;
+	DroneState state;
     int analyseRemainingTime = 0;
 	
 	enum DroneState {
@@ -21,6 +21,25 @@ public class Drone {
 		this.controlCenter = controlCenter;
 		this.x = environment.baseX; //pisitionnement initialle est base
         this.y = environment.baseY;
+		this.state = DroneState.MOVING;
+		controlCenter.registerDrone(this); // chaque drone s’enregistre automatiquement auprès de control center lors de sa création
+
+	}
+
+	public int getX() { 
+		return x; 
+	}
+
+	public int getY() { 
+		return y; 
+	}
+
+	public DroneState getState() {
+		return state; 
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public int getBaseX() {

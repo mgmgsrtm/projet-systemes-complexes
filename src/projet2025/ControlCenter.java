@@ -10,10 +10,17 @@ public class ControlCenter {
 
     List<String> eventLog;
 
+    List<Drone> drones = new ArrayList<>();  //Le ControlCenter a une vision globale du groupe de drones.
+
     public ControlCenter() {
         this.totalCowsDetected = 0;
         this.totalCellsExplored = 0;
         this.eventLog = new ArrayList<>();
+    }
+
+
+    public void registerDrone(Drone d) {
+        drones.add(d);
     }
 
     public void reportCow(int droneId, int x, int y, double radiation) {
@@ -25,5 +32,12 @@ public class ControlCenter {
             " radiation=" + radiation +
             (dangerous ? " [DANGEROUS]" : "")
         );
+    }
+
+    // méthode permettant d’afficher l’état courant de tous les drones du groupe.
+
+    public void printDroneStatus(){
+        for (Drone d: drones) {
+            System.out.println("Drone " + d.getId() + "(" + d.getX() + "," + d.getY() + ")" + "state: " +d.getState());        }
     }
 }
