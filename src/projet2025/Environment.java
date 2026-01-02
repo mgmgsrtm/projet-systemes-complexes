@@ -193,14 +193,17 @@ public class Environment {
     public void printMap(Drone[] drones) {
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+            	boolean droneHere = false;
             	
             	//dessiner l'essaim de drones
             	for (Drone d : drones) {
             	    if (d.x == x && d.y == y) {
             	        System.out.print("D|");
+            	        droneHere = true;
             	        break;
             	    }
             	}
+            	if (droneHere) continue;  //éviter d’afficher deux fois dans la même cellule
             	
             	Cell c = grid[x][y];
 		    	if (c.isBase) {
