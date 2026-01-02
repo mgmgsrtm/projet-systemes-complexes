@@ -67,7 +67,7 @@ public class Drone {
 
 		//avancer ver une cellule non explorée
 		List<Cell> neighbors = getNeighbors(); // avoir la liste des cellules voisines accessibles
-		Cell nextc = chooseCextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
+		Cell nextc = chooseNextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
 
 
 		// //determination des coordonnées suivantes (nextx, nexty)
@@ -135,7 +135,7 @@ public class Drone {
 	}
 
 	// choirie un cell pour privilégier le déplacement vers le cell non exploré
-	private Cell chooseCextCell(List<Cell> neighbors) {
+	private Cell chooseNextCell(List<Cell> neighbors) {
 		List<Cell> notExplored = new ArrayList<>();
 		for (Cell c: neighbors){
 			if(!c.explored){
