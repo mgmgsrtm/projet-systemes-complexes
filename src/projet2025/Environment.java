@@ -130,7 +130,7 @@ public class Environment {
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
     
     public void updateEnvironment() {
-        double halfLife = 90.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
+        double halfLife = 120.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
         double decay = Math.pow(0.5, 1.0 / halfLife); //calcul du facteur de décroissance correspondant à une seconde
 
         //début de la boucle parcourant toute la grille
@@ -190,27 +190,36 @@ public class Environment {
     	System.out.println();
     }
     
-    public void printMap(Drone d) {
+    public void printMap(Drone[] drones) {
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+            	
+            	//dessiner l'essaim de drones
+            	for (Drone d : drones) {
+            	    if (d.x == x && d.y == y) {
+            	        System.out.print("D|");
+            	        break;
+            	    }
+            	}
+            	
             	Cell c = grid[x][y];
 		    	if (c.isBase) {
 		    	    System.out.print("B|");
-		    	} else if (x == d.x && y == d.y) {
-                    System.out.print("D|");   // Drone
+//		    	} else if (x == d.x && y == d.y) {
+//                    System.out.print("D|");   // Drone
                 } else if (c.explored) {
 	                System.out.print(".|");   //探索済みはすべて「.」
 	            }else if (c.radiationLevel > RADIATION_FORBIDDEN) {
 		    		if (c.hasCow) {
-		    	        System.out.print("!|");
+		    	        System.out.print("!|"); //cow + forbiden
 		    	    } else {
-		    	        System.out.print("X|");
+		    	        System.out.print("X|"); //radiation level forbidden
 		    	    }
 		    	} else if (c.radiationLevel > RADIATION_LIMITED) {
 		    	    if (c.hasCow) {
 		    	        System.out.print("c|"); // cow + limited
 		    	    } else {
-		    	        System.out.print("~|");
+		    	        System.out.print("~|"); //radiation level limited
 		    	    }
 		    	} else if (c.hasCow) {
 		    	    System.out.print("C|");   // safe cow
@@ -235,18 +244,28 @@ public class Environment {
         env.printIfCowMap();
 
         ControlCenter cc = new ControlCenter();
-        Drone d1 = new Drone(1, env, cc);
+        
+        
+        int nb_drones = 7;
+        Drone[] drones = new Drone[nb_drones];
+        
+        //Drone d1 = new Drone(1, env, cc);
+        for (int i = 0; i < nb_drones; i++) {
+            drones[i] = new Drone(i + 1, env, cc);
+        }
 
         for (int t = 0; t < 300; t++) { // 300 秒
-            d1.step();
-            System.out.println(d1.state);
+        	for (Drone d :drones) {
+        		d.step();
+        	}
             env.updateEnvironment();
 
             if (t % 10 == 0) { //環境更新とドローンの移動は毎秒行われているが、10秒に1回だけ表示
                 env.printRadLevelMap();
-                env.printMap(d1);
-                System.out.println(cc.totalCellsExplored);
-                System.out.println(cc.totalCowsDetected);
+                env.printMap(drones);
+                System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
+                System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
+                cc.printDroneStatus();
             }
             
             try {
