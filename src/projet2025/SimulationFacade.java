@@ -8,7 +8,7 @@ public class SimulationFacade {
 
 	public SimulationFacade(int matrice, int nbDrone) {
 		this.env = new Environment(matrice, matrice);
-		this.cc = new ControlCenter();
+		this.cc = new ControlCenter(matrice);
 		drones = new Drone[nbDrone];
 		
        
@@ -51,6 +51,11 @@ public class SimulationFacade {
         System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
         System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
         cc.printDroneStatus();
+        System.out.println(cc.eventLog);
+        for (Drone d :drones) {
+        	System.out.println("time: " + d.missionTime);
+        }
+
 	}
 	
 	

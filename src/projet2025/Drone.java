@@ -12,11 +12,19 @@ public class Drone {
 	DroneState state;
     int analyseRemainingTime = 0;
     boolean[][] localExplored;
+    GlobalCellInfo [][] localGlobalView;
+    
+    int missionTime;
+    static final int MAX_MISSION_TIME = 60;
+    
+    int chargingTime;
+    static final int CHARGING_DURATION = 20;
 	
 	enum DroneState {
 	    MOVING,
 	    ANALYSING,
-	    RETURNING
+	    RETURNING,
+	    CHARGING
 	}
 
 	public Drone(int id, Environment environment, ControlCenter controlCenter) {
@@ -27,8 +35,14 @@ public class Drone {
         this.y = environment.baseY;
 		this.state = DroneState.MOVING;
 		controlCenter.registerDrone(this); // chaque drone s’enregistre automatiquement auprès de control center lors de sa création
+		
 		this.localExplored = new boolean[environment.width][environment.height]; //local環境の初期化
 		localExplored[x][y] = true; //base は既知
+		
+		missionTime = 0;
+	
+		chargingTime = 0;
+		
 	}
 
 	public int getX() { 
@@ -57,8 +71,28 @@ public class Drone {
     
 
 	public void step() {
-		
+		if (state != DroneState.CHARGING) {
+		    missionTime++;
+		}
+		if (missionTime >= MAX_MISSION_TIME && state == DroneState.MOVING) {
+	        state = DroneState.RETURNING;
+	    }
+	    if (state == DroneState.RETURNING) {
+	        returnToBase();
+	        return;
+	    }
+	    if (state == DroneState.CHARGING) {
+			 chargingTime++;   // 1 seconde de recharge
+			 System.out.println("charging...");
+		     System.out.println("time: " + this.chargingTime);
+			 if (chargingTime >= CHARGING_DURATION) {
+			        restart();    // il faut attendre 20 secondes pour restart
+			}
+			return;
+		}
 		if (state == DroneState.ANALYSING) {
+			
+			
 	        analyseRemainingTime--;
 
 	        if (analyseRemainingTime <= 0) {
@@ -66,7 +100,7 @@ public class Drone {
 	        }
 	        return; // analyse中は移動しない
 	    }
-
+		
 		//avancer ver une cellule non explorée
 		List<Cell> neighbors = getNeighbors(); // avoir la liste des cellules voisines accessibles
 		Cell nextc = chooseNextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
@@ -92,7 +126,6 @@ public class Drone {
 
 
 	public void exploreCell(Cell cell){
-		//TODO
 		//voir si les cells autour sont explorable ou non
 		 if (!localExplored[cell.x][cell.y]) {
 			 localExplored[cell.x][cell.y] = true;
@@ -109,9 +142,13 @@ public class Drone {
 	private void finishAnalyse() {
 	    Cell c = environment.getCell(x, y);
 	    
-	    if (c.hasCow && !c.cowHandled) {
+	    // controlcenterに座標、放射能、座標を即時共有
+	    controlCenter.updateCellInfo(x, y, c.radiationLevel, c.hasCow);
+	    
+	    //if (c.hasCow && !c.cowHandled) {
+	    if (c.hasCow) {
 	        controlCenter.reportCow(id, x, y, c.radiationLevel);
-	        c.cowHandled = true;
+	       // c.cowHandled = true;
 	    }
 	    state = DroneState.MOVING;
 	}
@@ -152,5 +189,26 @@ public class Drone {
 		//si la liste est vide, une cellule déjà explorée est choisie aléatoirement
 		return neighbors.get((int)(Math.random() * neighbors.size()));
 	}
+	
+	 private void returnToBase() {
+		 //TODO
+		 this.x = environment.baseX; //pisitionnement initialle est base
+	     this.y = environment.baseY;
+	     chargingTime = 0; 
+	     this.state = DroneState.CHARGING;
+	 }
+	 
+	 private void restart() {
+		 System.out.println("dans methode restart");
+		 missionTime = 0;
+		 //mettre a jour de GlobalCellInfo
+		 localGlobalView = controlCenter.getGlobalMapCopy();
+
+		 //localMap  initialization
+		 localExplored = new boolean[environment.width][environment.height];
+		 localExplored[x][y] = true;
+		    
+		 state = DroneState.MOVING;
+	 }
 
 }

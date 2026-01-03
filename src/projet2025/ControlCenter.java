@@ -11,8 +11,20 @@ public class ControlCenter {
     List<String> eventLog;
 
     List<Drone> drones = new ArrayList<>();  //Le ControlCenter a une vision globale du groupe de drones.
+    
+    
+    GlobalCellInfo[][] globalMap;
 
-    public ControlCenter() {
+    public ControlCenter(int matrice) {
+    	
+    	globalMap = new GlobalCellInfo[matrice][matrice];
+    	
+    	for (int x = 0; x < matrice; x++) {
+    	    for (int y = 0; y < matrice; y++) {
+    	        globalMap[x][y] = new GlobalCellInfo();
+    	    }
+    	}
+
         this.totalCowsDetected = 0;
         this.totalCellsExplored = 0;
         this.eventLog = new ArrayList<>();
@@ -22,7 +34,16 @@ public class ControlCenter {
     public void registerDrone(Drone d) {
         drones.add(d);
     }
-
+    
+    
+    public void updateCellInfo(int x, int y, double radiation, boolean hasCow) {
+        GlobalCellInfo info = globalMap[x][y];
+        info.explored = true;
+        info.radiationLevel = radiation;
+        info.hasCow = hasCow;
+    }
+    
+    
     public void reportCow(int droneId, int x, int y, double radiation) {
         totalCowsDetected++;
         boolean dangerous = radiation > 1;
@@ -32,6 +53,18 @@ public class ControlCenter {
             " radiation=" + radiation +
             (dangerous ? " [DANGEROUS]" : "")
         );
+    }
+    
+    
+    public GlobalCellInfo[][] getGlobalMapCopy() {
+        GlobalCellInfo[][] copy = new GlobalCellInfo[globalMap.length][globalMap[0].length];
+
+        for (int x = 0; x < globalMap.length; x++) {
+            for (int y = 0; y < globalMap[0].length; y++) {
+                copy[x][y] = globalMap[x][y]; 
+            }
+        }
+        return copy;
     }
 
     // méthode permettant d’afficher l’état courant de tous les drones du groupe.
