@@ -214,7 +214,7 @@ public class Environment {
 	                System.out.print(".|");   //探索済みはすべて「.」
 	            }else if (c.radiationLevel > RADIATION_FORBIDDEN) {
 		    		if (c.hasCow) {
-		    	        System.out.print("!|"); //cow + forbiden
+		    	        System.out.print("!|"); //cow + forbidden
 		    	    } else {
 		    	        System.out.print("X|"); //radiation level forbidden
 		    	    }
@@ -234,53 +234,5 @@ public class Environment {
     	}
     	System.out.println();
     }
-    
-        
-
-
-    public static void main(String[] args) {
-
-        Environment env = new Environment(20, 20);
-        env.initializeEnvironment();
-        env.printEnvironment();
-        env.printRadLevelMap();
-        env.printIfCowMap();
-
-        ControlCenter cc = new ControlCenter();
-        
-        
-        int nb_drones = 7;
-        Drone[] drones = new Drone[nb_drones];
-        
-        //Drone d1 = new Drone(1, env, cc);
-        for (int i = 0; i < nb_drones; i++) {
-            drones[i] = new Drone(i + 1, env, cc);
-        }
-
-        for (int t = 0; t < 300; t++) { // 300 秒
-        	for (Drone d :drones) {
-        		d.step();
-        	}
-            env.updateEnvironment();
-
-            if (t % 10 == 0) { //環境更新とドローンの移動は毎秒行われているが、10秒に1回だけ表示
-                env.printRadLevelMap();
-                env.printMap(drones);
-                System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
-                System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
-                cc.printDroneStatus();
-            }
-            
-            try {
-                Thread.sleep(1000); // 1秒待つ（＝実時間で1秒）
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    
-    
-    
-    
+      
 }
