@@ -15,12 +15,12 @@ Les décisions sont prises sous information imparfaite, les drones ne mettant à
 ---
 
 #### Tâches à prioriser avant la remise
-1. Actuellement  7 drones partent plusieurs fois et plusieurs drones détectent à répétition la même vache → modifier le comportement afin de ne pas la signaler si elle existe déjà en comparaison avec la globalMap（déplacement possible des vaches??）
-2. Faire en sorte que les drones partent avec un décalage dans le temps.
-3. Pour l’affichage dans l’interface, réorganiser les méthodes print Environnement ainsi que le roll de GlobalCellInfo.
-4. Visualiser l’efficacité de l’exploration, les indicateurs et l’évaluation.
+- Actuellement  7 drones partent plusieurs fois et plusieurs drones détectent à répétition la même vache → modifier le comportement afin de ne pas la signaler si elle existe déjà en comparaison avec la globalMap (déplacement possible des vaches??)
+- Faire en sorte que les drones partent avec un décalage dans le temps.
+- Pour l’affichage dans l’interface, réorganiser les méthodes print Environnement ainsi que le roll de GlobalCellInfo.
+- Visualiser l’efficacité de l’exploration, les indicateurs et l’évaluation.
 
-#### L’instruction ci-dessous doit être revue
+##### L’instruction ci-dessous doit être revue
 7. Tests et simulations
 Concevoir et exécuter différents scénarios de simulation permettant d’évaluer :
 • la couverture de la zone,
