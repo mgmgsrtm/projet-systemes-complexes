@@ -21,10 +21,11 @@ public class SimulationFacade {
 	public void startSimulation(int duration) {
 		env.initializeEnvironment();
         env.printEnvironment();
-        env.printRadLevelMap();
         env.printIfCowMap();
         
-        for (int t = 0; t < 300; t++) { // 300 秒
+        printSimulation();
+        
+        for (int t = 0; t < duration; t++) { // 300 秒
         	for (Drone d :drones) {
         		d.step();
         	}
@@ -46,7 +47,7 @@ public class SimulationFacade {
 	
 	public void printSimulation() {
 		env.printRadLevelMap();
-        env.printMap(drones);
+        env.printMap(drones); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
         System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
         System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
         cc.printDroneStatus();

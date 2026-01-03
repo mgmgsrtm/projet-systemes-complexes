@@ -11,6 +11,7 @@ public class Drone {
 	ControlCenter controlCenter;
 	DroneState state;
     int analyseRemainingTime = 0;
+    boolean[][] localExplored;
 	
 	enum DroneState {
 	    MOVING,
@@ -26,7 +27,8 @@ public class Drone {
         this.y = environment.baseY;
 		this.state = DroneState.MOVING;
 		controlCenter.registerDrone(this); // chaque drone s’enregistre automatiquement auprès de control center lors de sa création
-
+		this.localExplored = new boolean[environment.width][environment.height]; //local環境の初期化
+		localExplored[x][y] = true; //base は既知
 	}
 
 	public int getX() { 
@@ -92,10 +94,10 @@ public class Drone {
 	public void exploreCell(Cell cell){
 		//TODO
 		//voir si les cells autour sont explorable ou non
-		if (!cell.explored) {
-	        cell.explored = true;
-	        controlCenter.totalCellsExplored++;
-	    }
+		 if (!localExplored[cell.x][cell.y]) {
+			 localExplored[cell.x][cell.y] = true;
+			 cell.explored = true;
+		 }
 		
 	}
 	
@@ -106,7 +108,7 @@ public class Drone {
 
 	private void finishAnalyse() {
 	    Cell c = environment.getCell(x, y);
-
+	    
 	    if (c.hasCow && !c.cowHandled) {
 	        controlCenter.reportCow(id, x, y, c.radiationLevel);
 	        c.cowHandled = true;
@@ -138,8 +140,8 @@ public class Drone {
 	private Cell chooseNextCell(List<Cell> neighbors) {
 		List<Cell> notExplored = new ArrayList<>();
 		for (Cell c: neighbors){
-			if(!c.explored){
-				notExplored.add(c);
+			if (!localExplored[c.x][c.y]) {
+			    notExplored.add(c);
 			}
 		}
 		// si la liste n’est pas vide, le drone y déplace
