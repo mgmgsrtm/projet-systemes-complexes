@@ -106,7 +106,9 @@ public class Drone {
 		Cell nextc = chooseNextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
 
 		if (controlCenter.isCellOccupied(nextc.x, nextc.y, this)) {
-			return; // eviter de choisir un cell occupé par un drone
+			neighbors.remove(nextc); 
+			if (neighbors.isEmpty()) return;
+			nextc = chooseNextCell(neighbors);
 		}
 
 		// //determination des coordonnées suivantes (nextx, nexty)
