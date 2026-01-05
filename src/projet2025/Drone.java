@@ -105,6 +105,9 @@ public class Drone {
 		List<Cell> neighbors = getNeighbors(); // avoir la liste des cellules voisines accessibles
 		Cell nextc = chooseNextCell(neighbors); // parcourt la liste et sélectionner une cellule non explorée
 
+		if (controlCenter.isCellOccupied(nextc.x, nextc.y, this)) {
+			return; // eviter de choisir un cell occupé par un drone
+		}
 
 		// //determination des coordonnées suivantes (nextx, nexty)
 		// int nextx = x + (int)(Math.random() * 3) - 1;
@@ -197,6 +200,7 @@ public class Drone {
 	     chargingTime = 0; 
 	     this.state = DroneState.CHARGING;
 	 }
+
 	 
 	 private void restart() {
 		 System.out.println("dans methode restart");

@@ -67,6 +67,15 @@ public class ControlCenter {
         return copy;
     }
 
+    public boolean isCellOccupied(int x, int y, Drone requester) {
+        for (Drone d : drones) {
+            if (d.getX() == x && d.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // méthode permettant d’afficher l’état courant de tous les drones du groupe.
 
     public void printDroneStatus(){
