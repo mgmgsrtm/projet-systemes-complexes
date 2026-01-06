@@ -12,4 +12,10 @@ public class GlobalCellInfo {
         this.hasCow = false;
 	}
 
+    public GlobalCellInfo(GlobalCellInfo other) {
+        this.explored = other.explored;
+        this.radiationLevel = other.radiationLevel;
+        this.hasCow = other.hasCow;
+    }
+
 }

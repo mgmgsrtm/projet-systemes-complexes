@@ -45,6 +45,9 @@ public class ControlCenter {
     
     
     public void reportCow(int droneId, int x, int y, double radiation) {
+        if (globalMap[x][y].hasCow) {
+            return; // この牛はすでに記録済み
+        }
         totalCowsDetected++;
         boolean dangerous = radiation > 1;
         eventLog.add(
@@ -61,7 +64,7 @@ public class ControlCenter {
 
         for (int x = 0; x < globalMap.length; x++) {
             for (int y = 0; y < globalMap[0].length; y++) {
-                copy[x][y] = globalMap[x][y]; 
+                copy[x][y] = copy[x][y] = new GlobalCellInfo(globalMap[x][y]); //生きた参照でなく、スナップショット
             }
         }
         return copy;

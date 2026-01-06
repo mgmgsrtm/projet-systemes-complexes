@@ -15,7 +15,7 @@ public class Drone {
     GlobalCellInfo [][] localGlobalView;
     
     int missionTime;
-    static final int MAX_MISSION_TIME = 60;
+    static final int MAX_MISSION_TIME = 180;
     
     int chargingTime;
     static final int CHARGING_DURATION = 20;
@@ -38,6 +38,8 @@ public class Drone {
 		
 		this.localExplored = new boolean[environment.width][environment.height]; //local環境の初期化
 		localExplored[x][y] = true; //base は既知
+		
+		this.localGlobalView = controlCenter.getGlobalMapCopy();
 		
 		missionTime = 0;
 	
@@ -147,14 +149,16 @@ public class Drone {
 	private void finishAnalyse() {
 	    Cell c = environment.getCell(x, y);
 	    
-	    // controlcenterに座標、放射能、座標を即時共有
-	    controlCenter.updateCellInfo(x, y, c.radiationLevel, c.hasCow);
-	    
+		GlobalCellInfo infoCell = localGlobalView[x][y];
+
 	    //if (c.hasCow && !c.cowHandled) {
-	    if (c.hasCow) {
+	    if (!infoCell.hasCow && c.hasCow) {
 	        controlCenter.reportCow(id, x, y, c.radiationLevel);
 	       // c.cowHandled = true;
 	    }
+	    // controlcenterに座標、放射能、座標を即時共有
+	    controlCenter.updateCellInfo(x, y, c.radiationLevel, c.hasCow);
+	    
 	    state = DroneState.MOVING;
 	}
 
