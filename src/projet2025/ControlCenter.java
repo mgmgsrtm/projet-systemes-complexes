@@ -36,26 +36,26 @@ public class ControlCenter {
     }
     
     
-    public void updateCellInfo(int x, int y, double radiation, boolean hasCow) {
+    public void updateCellInfo(int x, int y, double radiation) {
         GlobalCellInfo info = globalMap[x][y];
         info.explored = true;
         info.radiationLevel = radiation;
-        info.hasCow = hasCow;
     }
     
     
     public void reportCow(int droneId, int x, int y, double radiation) {
-        if (globalMap[x][y].hasCow) {
-            return; // この牛はすでに記録済み
+        if (!globalMap[x][y].hasCow) {
+        	globalMap[x][y].hasCow = true;
+            totalCowsDetected++;
+            boolean dangerous = radiation > 1;
+            eventLog.add(
+                "Drone " + droneId +
+                " detected cow at (" + x + "," + y + ")" +
+                " radiation=" + radiation +
+                (dangerous ? " [DANGEROUS]" : "")
+            );
         }
-        totalCowsDetected++;
-        boolean dangerous = radiation > 1;
-        eventLog.add(
-            "Drone " + droneId +
-            " detected cow at (" + x + "," + y + ")" +
-            " radiation=" + radiation +
-            (dangerous ? " [DANGEROUS]" : "")
-        );
+        return; // この牛はすでに記録済み
     }
     
     
@@ -84,5 +84,36 @@ public class ControlCenter {
     public void printDroneStatus(){
         for (Drone d: drones) {
             System.out.println("Drone " + d.getId() + "(" + d.getX() + "," + d.getY() + ")" + "state: " +d.getState());        }
+    }
+
+
+    public void printGlobalMap() {
+        System.out.println("==== GLOBAL MAP (Control Center) ====");
+
+        for (int y = 0; y < globalMap[0].length; y++) {
+            for (int x = 0; x < globalMap.length; x++) {
+
+                GlobalCellInfo c = globalMap[x][y];
+
+                if (!c.explored) {
+                    System.out.print("?|");
+                }
+                else if (c.radiationLevel > Environment.RADIATION_FORBIDDEN) {
+                    System.out.print("X|");
+                }
+                else if (c.radiationLevel > Environment.RADIATION_LIMITED) {
+                    System.out.print("~|");
+                }
+                else if (c.hasCow) {
+                    System.out.print("C|");
+                }
+                else {
+                    System.out.print(" |");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("=== GLOBAL MAP (Control Center) ===");
+        System.out.println();
     }
 }

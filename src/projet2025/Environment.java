@@ -130,7 +130,7 @@ public class Environment {
     //propagation(la direction du vent), diminution(demi-vie radioactive)　etc.
     
     public void updateEnvironment() {
-        double halfLife = 120.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
+        double halfLife = 180.0; //demi-vie radioactive : temps nécessaire pour que le niveau de radiation soit divisé par deux 
         double decay = Math.pow(0.5, 1.0 / halfLife); //calcul du facteur de décroissance correspondant à une seconde
 
         //début de la boucle parcourant toute la grille
@@ -191,6 +191,7 @@ public class Environment {
     }
     
     public void printMap(Drone[] drones) {
+        System.out.println("=== ENVIRONNEMENT ACTUEL (Class Environment) we can not see new hotspot===");
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
             	boolean droneHere = false;

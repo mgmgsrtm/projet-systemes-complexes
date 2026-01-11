@@ -77,7 +77,7 @@ public class Drone {
 
 		// procédure d’évacuation d’urgence en cas de generateHotspot() en Environment
     	Cell here = environment.getCell(x, y);
-   		if (here.radiationLevel > Environment.RADIATION_FORBIDDEN) {
+   		if (here.radiationLevel > Environment.RADIATION_FORBIDDEN && state != DroneState.RETURNING) {
 			emergencyEvade();
 			return;
 		}
@@ -154,8 +154,8 @@ public class Drone {
 		 if (!localExplored[cell.x][cell.y]) {
 			 localExplored[cell.x][cell.y] = true;
 			 cell.explored = true;
+			 controlCenter.updateCellInfo(cell.x, cell.y, cell.radiationLevel);
 		 }
-		
 	}
 	
 	public void startAnalyse(Cell cell) {
@@ -174,7 +174,7 @@ public class Drone {
 	       // c.cowHandled = true;
 	    }
 	    // controlcenterに座標、放射能、座標を即時共有
-	    controlCenter.updateCellInfo(x, y, c.radiationLevel, c.hasCow);
+	    controlCenter.updateCellInfo(x, y, c.radiationLevel);
 	    
 	    state = DroneState.MOVING;
 	}

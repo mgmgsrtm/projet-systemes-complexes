@@ -49,20 +49,26 @@ public class SimulationFacade {
                 printSimulation();
             }
             
+            if (t % 30 == 0) {
+            	System.out.println("time t = "+ t);
+            	cc.printGlobalMap();
+            }
+            
             try {
                 Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-       
+        System.out.println("l'etat final de GlobalMap:");
+        cc.printGlobalMap();
 	}
 	
 	
 	public void printSimulation() {
 		env.printRadLevelMap();
         env.printMap(drones); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
-        System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
+//        System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
         System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
         cc.printDroneStatus();
         System.out.println(cc.eventLog);
