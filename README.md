@@ -17,7 +17,7 @@ Les décisions sont prises sous information imparfaite, les drones ne mettant à
 #### Tâches à prioriser avant la remise
 - [done] Actuellement  7 drones partent plusieurs fois et plusieurs drones détectent à répétition la même vache → modifier le comportement afin de ne pas la signaler si elle existe déjà en comparaison avec la globalMap
 - (déplacement possible des vaches??...depend de supprimer ou non attribut cowHandled)
-- Faire en sorte que les drones partent avec un décalage dans le temps.
+- [done]Faire en sorte que les drones partent avec un décalage dans le temps.
 - Pour l’affichage dans l’interface, réorganiser les méthodes print Environnement ainsi que le roll de GlobalCellInfo.
 - Visualiser l’efficacité de l’exploration, les indicateurs et l’évaluation.
 
