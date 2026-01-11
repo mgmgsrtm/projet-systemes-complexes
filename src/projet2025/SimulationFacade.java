@@ -33,7 +33,7 @@ public class SimulationFacade {
             for (int i = 0; i < drones.length; i++){
                 if (t >= intervalLaunch * i  && drones[i].getState() == Drone.DroneState.WAITING){
                     drones[i].state = Drone.DroneState.MOVING;
-                    System.out.println("Drone id:" + drones[i].getId() + " started." );
+                    System.out.println("Drone id" + drones[i].getId() + " started." );
                 }
             }
 
@@ -76,7 +76,7 @@ public class SimulationFacade {
 	
 	public static void main(String[] args) {
 		
-		SimulationFacade simulation = new SimulationFacade(20, 7, 10);
+		SimulationFacade simulation = new SimulationFacade(20, 7, 3);
 		simulation.startSimulation(300);
 		
 	

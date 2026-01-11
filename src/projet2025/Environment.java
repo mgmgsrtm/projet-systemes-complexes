@@ -73,7 +73,7 @@ public class Environment {
                 if (c.isBase) continue; 
                 c.radiationLevel = 0.00; // 0.0 ～ 1.0
                 c.hasDebris = Math.random() < 0.1; // cell a 10% de possibilite d'avoir debris
-                c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un caw
+                c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un cow
                 c.cowHandled = false;
             }
         }

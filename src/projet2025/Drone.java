@@ -74,6 +74,13 @@ public class Drone {
     
 
 	public void step() {
+
+		// procédure d’évacuation d’urgence en cas de generateHotspot() en Environment
+    	Cell here = environment.getCell(x, y);
+   		if (here.radiationLevel > Environment.RADIATION_FORBIDDEN) {
+			emergencyEvade();
+			return;
+		}
 		if (state == DroneState.WAITING) {
 	        return; // drone n'est pas encore parti
 	    }
@@ -133,6 +140,12 @@ public class Drone {
 	        startAnalyse(nextc);
 	    }
 
+	}
+
+	//procédure d’évacuation d’urgence
+	public void emergencyEvade() {
+		System.out.println("!!! EMERGENCY EVACUATION Drone " + id);
+		state = DroneState.RETURNING;
 	}
 
 
