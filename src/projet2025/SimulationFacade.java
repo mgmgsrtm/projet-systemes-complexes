@@ -29,27 +29,28 @@ public class SimulationFacade {
         
         for (int t = 0; t < duration; t++) { // 300 秒
 
-            //TODO
             // logique du départ des drones à intervalles réguliers　chaque (intervalLaunch) 
-
             for (int i = 0; i < drones.length; i++){
-                if (t >= intervalLaunch * i ){
+                if (t >= intervalLaunch * i  && drones[i].getState() == Drone.DroneState.WAITING){
                     drones[i].state = Drone.DroneState.MOVING;
-                    System.out.println("Drone No." + i + "started." );
+                    System.out.println("Drone id:" + drones[i].getId() + " started." );
                 }
             }
 
+            // comportement dans les états autres que WAITING
         	for (Drone d :drones) {
         		d.step();
         	}
             env.updateEnvironment();
 
-            if (t % 10 == 0) { //環境更新とドローンの移動は毎秒行われているが、10秒に1回だけ表示
+            //environnement et le déplacement du drone sont mis à jour chaque seconde
+            //mais l'affichage est effectué toutes les 10 secondes
+            if (t % 10 == 0) { 
                 printSimulation();
             }
             
             try {
-                Thread.sleep(1000); // 1秒待つ（＝実時間で1秒）
+                Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -75,7 +76,7 @@ public class SimulationFacade {
 	
 	public static void main(String[] args) {
 		
-		SimulationFacade simulation = new SimulationFacade(20, 7, 0);
+		SimulationFacade simulation = new SimulationFacade(20, 7, 10);
 		simulation.startSimulation(300);
 		
 	

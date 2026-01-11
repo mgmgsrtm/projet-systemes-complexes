@@ -74,6 +74,9 @@ public class Drone {
     
 
 	public void step() {
+		if (state == DroneState.WAITING) {
+	        return; // drone n'est pas encore parti
+	    }
 		if (state != DroneState.CHARGING) {
 		    missionTime++;
 		}
