@@ -21,6 +21,7 @@ public class Drone {
     static final int CHARGING_DURATION = 20;
 	
 	enum DroneState {
+		WAITING,
 	    MOVING,
 	    ANALYSING,
 	    RETURNING,
@@ -33,7 +34,7 @@ public class Drone {
 		this.controlCenter = controlCenter;
 		this.x = environment.baseX; //pisitionnement initialle est base
         this.y = environment.baseY;
-		this.state = DroneState.MOVING;
+		this.state = DroneState.WAITING;
 		controlCenter.registerDrone(this); // chaque drone s’enregistre automatiquement auprès de control center lors de sa création
 		
 		this.localExplored = new boolean[environment.width][environment.height]; //local環境の初期化
