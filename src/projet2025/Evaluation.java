@@ -1,5 +1,8 @@
-package projet2025;    
-    public class Evaluation {
+package projet2025;
+
+import java.util.List;
+
+public class Evaluation {
 
         // variavle à utiliser 
         int explored;
@@ -22,9 +25,6 @@ package projet2025;
         double coordinationScore;
 
 
-
-
-
         public Evaluation(){
             coverage=0;
             rapidityScore=0;
@@ -32,7 +32,12 @@ package projet2025;
             coordinationScore=0;
         }
 
-
+        public void computeMetrics() {
+            computeCoverage();
+            computeRapidity();
+            duplicateRate();
+            computeCoordination();
+        }
 
 
         private void computeCoverage() {
@@ -49,13 +54,18 @@ package projet2025;
         }
 
 
+        private void duplicateRate() { 
+            //TODO 
+        }
+
+
 
         private void computeCoordination() {
             //TODO
         }
 
 
-        
+
         @Override
         public String toString() {
             return "...";

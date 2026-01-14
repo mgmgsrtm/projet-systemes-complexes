@@ -6,6 +6,7 @@ public class SimulationFacade {
 	ControlCenter cc;
 	Drone[] drones;
     int intervalLaunch;
+    Evaluation evl;
 
 	public SimulationFacade(int matrice, int nbDrone, int intervalLaunch) {
 		this.env = new Environment(matrice, matrice);
@@ -62,13 +63,16 @@ public class SimulationFacade {
         }
         System.out.println("l'etat final de GlobalMap:");
         cc.printGlobalMap();
+
+        runEvaluation();
+
 	}
 	
 	
 	public void printSimulation() {
 		env.printRadLevelMap();
         env.printMap(drones); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
-//        System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
+        // System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
         System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
         cc.printDroneStatus();
         System.out.println(cc.eventLog);
@@ -77,6 +81,31 @@ public class SimulationFacade {
         }
 
 	}
+
+
+    private void runEvaluation() {
+
+        Evaluation evl = new Evaluation();
+
+        // --- 値の収集 ---
+        evl.setExplored();
+        evl.setExplorable();
+
+        evl.setTotalCows();
+        evl.setDetectedCows();
+
+        evl.setTotalDetectionEvents();
+        evl.setDuplicateDetections();
+
+        evl.setPotentialConflicts();
+        evl.setAvoidedConflicts();
+
+        // --- 計算 ---
+        evl.computeMetrics();
+
+        // --- 表示 ---
+        System.out.println(evl);
+    }
 	
 	
 	
