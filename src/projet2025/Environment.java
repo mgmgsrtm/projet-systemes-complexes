@@ -1,10 +1,17 @@
 package projet2025;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Environment {
 
     int width;
     int height;
-    Cell[][] grid;  
+    Cell[][] grid;
+
+    List<Cow> cows;
+    int cowIdCounter = 0;
+    int currentTime = 0;   
 
     int baseX;
     int baseY;
@@ -20,6 +27,8 @@ public class Environment {
 
         this.baseX = 0;
         this.baseY = 0;
+
+        this.cows = new ArrayList<>();
         
         this.timeSinceLastHotspot = 0;
 
@@ -73,10 +82,28 @@ public class Environment {
                 if (c.isBase) continue; 
                 c.radiationLevel = 0.00; // 0.0 ～ 1.0
                 c.hasDebris = Math.random() < 0.1; // cell a 10% de possibilite d'avoir debris
-                c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un cow
+                // c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un cow
                 c.cowHandled = false;
             }
         }
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell c = grid[x][y];
+                if (c.isBase) continue;
+                if (Math.random() < 0.05) {
+                    cowIdCounter++;
+                    Cow cow = new Cow(
+                        cowIdCounter,
+                        x,
+                        y,
+                        currentTime   
+                    );
+                    cows.add(cow);
+                    c.hasCow = true; //pour affichage Environment
+                }
+            }
+        }
+
         int nbHotspot = 4 + (int)(Math.random()* 2);  // il y a 4 ou 5 hotspot par defaut
 
         for(int i = 0; i < nbHotspot; i ++ ){
@@ -150,8 +177,18 @@ public class Environment {
             timeSinceLastHotspot = 0;
             // ちょうどいる cell に hotspot が出現したら？後で「緊急退避」を追加する
         }
+        currentTime++;  // time for cow
     }
 
+
+    public Cow getCowAt(int x, int y) {
+		for (Cow c : cows) {
+			if (c.x == x && c.y == y) {
+				return c;
+			}
+		}
+		return null;
+	}
 
 
 

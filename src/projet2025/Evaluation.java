@@ -1,5 +1,6 @@
 package projet2025;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Evaluation {
@@ -30,6 +31,7 @@ public class Evaluation {
             rapidityScore=0;
             duplicateRate=0;
             coordinationScore=0;
+            delays = new ArrayList<>();
         }
 
         public void computeMetrics() {
@@ -50,7 +52,23 @@ public class Evaluation {
 
 
         private void computeRapidity() { 
-            //TODO 
+        	//rapidity_score= detection_rate / mean_delay 
+        	//avec :
+        	//detection_rate = detected_cows / total_cows
+        	//mean_delay = Σ delay / detected_cows 
+        	
+        	// detection_rate
+            double detectionRate = (double) detectedCows / totalCows;
+            
+            // mean_delay
+            double sum = 0;
+            for (int d : delays) {
+                sum += d;
+            }
+            double meanDelay = sum / delays.size();
+            
+            // rapidity_score
+            rapidityScore = detectionRate / meanDelay;
         }
 
 
@@ -65,9 +83,54 @@ public class Evaluation {
         }
 
 
+        public void addDelay(int delay) {
+            delays.add(delay);
+        }
+
+
+
+
+
+
+        //setters
+
+        public void setExplored(){
+
+        }
+        
+        public void setExplorable(){
+
+        }
+        
+        public void setTotalCows(Environment env){
+            this.totalCows = env.cows.size();
+        }
+        
+        public void setDetectedCows(Environment env){
+                this.detectedCows = this.delays.size();
+        }
+
+        public void setTotalDetectionEvents(){
+
+        }
+        
+        public void setDuplicateDetections(){
+
+        }
+
+        public void setPotentialConflicts(){
+
+        }
+        
+        public void  setAvoidedConflicts(){
+
+        }
+
 
         @Override
         public String toString() {
             return "...";
         }
+
     }
+

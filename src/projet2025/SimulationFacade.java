@@ -12,11 +12,12 @@ public class SimulationFacade {
 		this.env = new Environment(matrice, matrice);
 		this.cc = new ControlCenter(matrice);
         this.intervalLaunch = intervalLaunch;
+        this.evl =new Evaluation();
 
 		drones = new Drone[nbDrone];
        
         for (int i = 0; i < nbDrone; i++) {
-            drones[i] = new Drone(i + 1, env, cc);
+            drones[i] = new Drone(i + 1, env, cc, evl);
         }
 	}
 
@@ -25,6 +26,7 @@ public class SimulationFacade {
 		env.initializeEnvironment();
         env.printEnvironment();
         env.printIfCowMap();
+        System.out.println(env.cows);
         
         printSimulation();
         
@@ -63,8 +65,9 @@ public class SimulationFacade {
         }
         System.out.println("l'etat final de GlobalMap:");
         cc.printGlobalMap();
+        System.out.println(evl.delays);
 
-        runEvaluation();
+        runEvaluation(env);
 
 	}
 	
@@ -83,28 +86,31 @@ public class SimulationFacade {
 	}
 
 
-    private void runEvaluation() {
+    private void runEvaluation(Environment env) {
 
-        Evaluation evl = new Evaluation();
+    //     Evaluation evl = new Evaluation();
 
-        // --- 値の収集 ---
-        evl.setExplored();
-        evl.setExplorable();
+    //     // --- 値の収集 ---
+    //     evl.setExplored();
+    //     evl.setExplorable();
 
-        evl.setTotalCows();
-        evl.setDetectedCows();
+        evl.setTotalCows(env);
+        evl.setDetectedCows(env);
+        System.out.println("totalCows = " + evl.totalCows);
+        System.out.println("detectedCows = " + evl.detectedCows);
 
-        evl.setTotalDetectionEvents();
-        evl.setDuplicateDetections();
+    //     evl.setTotalDetectionEvents();
+    //     evl.setDuplicateDetections();
 
-        evl.setPotentialConflicts();
-        evl.setAvoidedConflicts();
+    //     evl.setPotentialConflicts();
+    //     evl.setAvoidedConflicts();
 
         // --- 計算 ---
         evl.computeMetrics();
+        System.out.println("Rapidity score = " + evl.rapidityScore);
 
-        // --- 表示 ---
-        System.out.println(evl);
+         // --- 表示 ---
+         //System.out.println(evl);
     }
 	
 	

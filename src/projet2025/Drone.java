@@ -13,6 +13,7 @@ public class Drone {
     int analyseRemainingTime = 0;
     boolean[][] localExplored;
     GlobalCellInfo [][] localGlobalView;
+	Evaluation evaluation;
     
     int missionTime;
     static final int MAX_MISSION_TIME = 180;
@@ -28,10 +29,11 @@ public class Drone {
 	    CHARGING
 	}
 
-	public Drone(int id, Environment environment, ControlCenter controlCenter) {
+	public Drone(int id, Environment environment, ControlCenter controlCenter, Evaluation evl) {
 		this.id = id;
 		this.environment = environment;
 		this.controlCenter = controlCenter;
+		this.evaluation = evl;
 		this.x = environment.baseX; //pisitionnement initialle est base
         this.y = environment.baseY;
 		this.state = DroneState.WAITING;
@@ -171,7 +173,15 @@ public class Drone {
 	    //if (c.hasCow && !c.cowHandled) {
 	    if (!infoCell.hasCow && c.hasCow) {
 	        controlCenter.reportCow(id, x, y, c.radiationLevel);
-	       // c.cowHandled = true;
+			
+			//calcul de rapidity et eventuellement du moyen
+			Cow cow = environment.getCowAt(x, y);
+			if (cow != null && !cow.detected) {
+				cow.detected = true;
+				int delay = environment.currentTime - cow.generatedTime;
+				evaluation.addDelay(delay);
+			}
+
 	    }
 	    // controlcenterに座標、放射能、座標を即時共有
 	    controlCenter.updateCellInfo(x, y, c.radiationLevel);
