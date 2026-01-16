@@ -1,18 +1,24 @@
 package projet2025;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ControlCenter {
 
     int totalCowsDetected;
     int totalCellsExplored;
 
+    int totalDetectionTentatives = 0;
+    int duplicateDetections = 0;
+
     List<String> eventLog;
 
     List<Drone> drones = new ArrayList<>();  //Le ControlCenter a une vision globale du groupe de drones.
     
-    
+    Set<Integer> detectedCowIds = new HashSet<>(); //
+
     GlobalCellInfo[][] globalMap;
 
     public ControlCenter(int matrice) {
@@ -43,19 +49,28 @@ public class ControlCenter {
     }
     
     
-    public void reportCow(int droneId, int x, int y, double radiation) {
-        if (!globalMap[x][y].hasCow) {
-        	globalMap[x][y].hasCow = true;
-            totalCowsDetected++;
+    public void reportCow(int droneId, int x, int y, double radiation, Cow cow ) {
+        if (cow == null) return;
+        totalDetectionTentatives++;
+
+        if (!detectedCowIds.contains(cow.id)) {
+            detectedCowIds.add(cow.id);
+            globalMap[x][y].hasCow = true;
+            totalCowsDetected++;  
+            System.out.println(detectedCowIds); // 初回のみ
             boolean dangerous = radiation > 1;
             eventLog.add(
                 "Drone " + droneId +
-                " detected cow at (" + x + "," + y + ")" +
+                " detected cow" + cow.id +"at (" + x + "," + y + ")" +
                 " radiation=" + radiation +
                 (dangerous ? " [DANGEROUS]" : "")
             );
+        }else if (detectedCowIds.contains(cow.id) && !globalMap[x][y].hasCow) {
+        	globalMap[x][y].hasCow = true;
+            // totalCowsDetected++;
+        	duplicateDetections++;
         }
-        return; // この牛はすでに記録済み
+        return; // この牛はすでに記録済みで移動なし
     }
     
     

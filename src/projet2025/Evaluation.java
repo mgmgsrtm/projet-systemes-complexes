@@ -13,8 +13,9 @@ public class Evaluation {
         int detectedCows;
         List<Integer> delays;
 
-        int totalDetectionEvents;
+        int totalDetectionTentatives;
         int duplicateDetections;
+        int totalCowsDetected;
 
         int potentialConflicts;
         int avoidedConflicts;
@@ -73,7 +74,11 @@ public class Evaluation {
 
 
         private void duplicateRate() { 
-            //TODO 
+            if (totalCowsDetected == 0) {
+                duplicateRate = 0;
+                return;
+            }
+            duplicateRate = (double) duplicateDetections / totalCowsDetected + duplicateDetections;
         }
 
 
@@ -110,12 +115,16 @@ public class Evaluation {
                 this.detectedCows = this.delays.size();
         }
 
-        public void setTotalDetectionEvents(){
-
+        public void settotalDetectionTentatives(int v){
+            this.totalDetectionTentatives = v;
         }
         
-        public void setDuplicateDetections(){
+        public void setDuplicateDetections(int v){
+            this.duplicateDetections = v;
+        }
 
+        public void setTotalCowsDetected(int v){
+            this.totalCowsDetected = v;
         }
 
         public void setPotentialConflicts(){

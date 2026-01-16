@@ -172,10 +172,10 @@ public class Drone {
 
 	    //if (c.hasCow && !c.cowHandled) {
 	    if (!infoCell.hasCow && c.hasCow) {
-	        controlCenter.reportCow(id, x, y, c.radiationLevel);
+			Cow cow = environment.getCowAt(x, y);
+	        controlCenter.reportCow(id, x, y, c.radiationLevel, cow);
 			
 			//calcul de rapidity et eventuellement du moyen
-			Cow cow = environment.getCowAt(x, y);
 			if (cow != null && !cow.detected) {
 				cow.detected = true;
 				int delay = environment.currentTime - cow.generatedTime;

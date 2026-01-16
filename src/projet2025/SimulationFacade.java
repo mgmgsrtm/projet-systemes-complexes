@@ -99,8 +99,11 @@ public class SimulationFacade {
         System.out.println("totalCows = " + evl.totalCows);
         System.out.println("detectedCows = " + evl.detectedCows);
 
-    //     evl.setTotalDetectionEvents();
-    //     evl.setDuplicateDetections();
+        evl.settotalDetectionTentatives(cc.totalDetectionTentatives);
+        evl.setDuplicateDetections(cc.duplicateDetections);
+        evl.setTotalCowsDetected(cc.totalCowsDetected);
+        System.out.println("totalDetectionTentative = " + evl.totalDetectionTentatives);
+        System.out.println("nb de duplicate detection = " + evl.duplicateDetections);
 
     //     evl.setPotentialConflicts();
     //     evl.setAvoidedConflicts();
@@ -108,6 +111,7 @@ public class SimulationFacade {
         // --- 計算 ---
         evl.computeMetrics();
         System.out.println("Rapidity score = " + evl.rapidityScore);
+        System.out.println("Duplicate rate = " + evl.duplicateRate);
 
          // --- 表示 ---
          //System.out.println(evl);
