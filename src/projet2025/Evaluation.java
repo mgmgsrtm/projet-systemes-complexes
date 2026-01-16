@@ -78,7 +78,7 @@ public class Evaluation {
                 duplicateRate = 0;
                 return;
             }
-            duplicateRate = (double) duplicateDetections / totalCowsDetected + duplicateDetections;
+            duplicateRate = (double)duplicateDetections / ((double)totalCowsDetected + (double)duplicateDetections);
         }
 
 

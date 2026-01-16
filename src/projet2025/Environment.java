@@ -20,6 +20,9 @@ public class Environment {
     public static final double RADIATION_LIMITED  = 1.0; // si 1+μSv/h drone peut entrer mais traitement de caw avec signalement
 
     int timeSinceLastHotspot;
+
+    int timeSinceLastCowMove = 0;
+    static final int COW_MOVE_INTERVAL = 40; // deplacement cow tous les 40 secondes
     
     public Environment(int width, int height) {
         this.width = width;
@@ -169,6 +172,8 @@ public class Environment {
             }
         }
         timeSinceLastHotspot++;
+
+        // --- apparition nouveau hotspot possible ---
         if (timeSinceLastHotspot >= 60) { // apres 60 secondes
             if (Math.random() < 0.75) {    // 75% de chance
                 generateHotspot();
@@ -177,8 +182,56 @@ public class Environment {
             timeSinceLastHotspot = 0;
             // ちょうどいる cell に hotspot が出現したら？後で「緊急退避」を追加する
         }
-        currentTime++;  // time for cow
+
+        currentTime++;  // time for cow detection delay
+
+        // --- deplacement de cow ---
+        timeSinceLastCowMove++;
+
+        if (timeSinceLastCowMove >= COW_MOVE_INTERVAL) {
+            moveSomeCows(); 
+            timeSinceLastCowMove = 0;
+        }
+
     }
+
+
+    private void moveSomeCows() {
+        if (cows.isEmpty()) return;
+        for (int i = 0; i < 2; i++) {
+            Cow cow = cows.get(
+                (int)(Math.random() * cows.size())
+            );
+            tryMoveCow(cow);
+            System.out.println("moving cow id: " + cow );
+        }
+    }
+
+
+    private void tryMoveCow(Cow cow) {
+    	// combinaisons representent haut, bas, gauche, droit
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, -1, 0, 1};
+        int dir = (int)(Math.random() * 4);
+        int nx = cow.x + dx[dir];
+        int ny = cow.y + dy[dir];
+
+        if (!isInside(nx, ny)) return;
+
+        Cell target = grid[nx][ny];
+
+        // cow deplace pas s'il y en a deja
+        if (target.hasCow) return;
+
+        // mettre a jour environment
+        grid[cow.x][cow.y].hasCow = false;
+        target.hasCow = true;
+
+        // mettre a jour de cellule de l'objet cow
+        cow.x = nx;
+        cow.y = ny;
+    }
+
 
 
     public Cow getCowAt(int x, int y) {
