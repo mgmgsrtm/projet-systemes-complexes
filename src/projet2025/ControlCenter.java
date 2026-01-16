@@ -13,6 +13,10 @@ public class ControlCenter {
     int totalDetectionTentatives = 0;
     int duplicateDetections = 0;
 
+    int potentialConflicts = 0;
+    int avoidedConflicts = 0;
+
+
     List<String> eventLog;
 
     List<Drone> drones = new ArrayList<>();  //Le ControlCenter a une vision globale du groupe de drones.

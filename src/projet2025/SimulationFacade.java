@@ -57,11 +57,11 @@ public class SimulationFacade {
             	cc.printGlobalMap();
             }
             
-           try {
-               Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
+//          try {
+//               Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
+//           } catch (InterruptedException e) {
+//               e.printStackTrace();
+//           }
         }
         System.out.println("l'etat final de GlobalMap:");
         cc.printGlobalMap();
@@ -88,8 +88,6 @@ public class SimulationFacade {
 
     private void runEvaluation(Environment env) {
 
-    //     Evaluation evl = new Evaluation();
-
     //     // --- 値の収集 ---
     //     evl.setExplored();
     //     evl.setExplorable();
@@ -105,14 +103,17 @@ public class SimulationFacade {
         System.out.println("totalDetectionTentative = " + evl.totalDetectionTentatives);
         System.out.println("nb de duplicate detection = " + evl.duplicateDetections);
 
-    //     evl.setPotentialConflicts();
-    //     evl.setAvoidedConflicts();
+        evl.setPotentialConflicts(cc.potentialConflicts);
+        evl.setAvoidedConflicts(cc.avoidedConflicts);
 
         // --- 計算 ---
         evl.computeMetrics();
         System.out.println("Rapidity score = " + evl.rapidityScore);
 //        System.out.println(evl.duplicateRate + "=" + (double)evl.duplicateDetections+ " / " + evl.totalCowsDetected + "+" + evl.duplicateDetections);
         System.out.println("Duplicate rate = " + evl.duplicateRate);
+        System.out.println("Avoidance rate = " + evl.avoidanceRate);
+        System.out.println("Coordination score = " + evl.coordinationScore);
+
 
          // --- 表示 ---
          //System.out.println(evl);

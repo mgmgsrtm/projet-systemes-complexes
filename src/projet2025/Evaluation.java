@@ -25,6 +25,7 @@ public class Evaluation {
         double rapidityScore;
         double duplicateRate;
         double coordinationScore;
+        double avoidanceRate;
 
 
         public Evaluation(){
@@ -39,6 +40,7 @@ public class Evaluation {
             computeCoverage();
             computeRapidity();
             duplicateRate();
+            computeAvoidanceRate() ;
             computeCoordination();
         }
 
@@ -69,7 +71,7 @@ public class Evaluation {
             double meanDelay = sum / delays.size();
             
             // rapidity_score
-            rapidityScore = detectionRate / meanDelay;
+            rapidityScore = 100*(detectionRate / meanDelay);
         }
 
 
@@ -82,9 +84,18 @@ public class Evaluation {
         }
 
 
+        private void computeAvoidanceRate() {
+            if (potentialConflicts == 0) {
+                avoidanceRate = 1; //quand il n'a aucun chevauchement de drone
+                return;
+            }
+            avoidanceRate = (double) avoidedConflicts / (double)potentialConflicts;
+        }
 
         private void computeCoordination() {
-            //TODO
+            double alpha = 0.5; //要検討
+            double beta  = 0.5; //要検討
+            coordinationScore = alpha * (1 - duplicateRate) + beta  * avoidanceRate;
         }
 
 
@@ -127,12 +138,12 @@ public class Evaluation {
             this.totalCowsDetected = v;
         }
 
-        public void setPotentialConflicts(){
-
+        public void setPotentialConflicts(int n){
+            this.potentialConflicts = n;
         }
         
-        public void  setAvoidedConflicts(){
-
+        public void  setAvoidedConflicts(int n){
+            this.avoidedConflicts = n;
         }
 
 
