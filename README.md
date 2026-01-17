@@ -24,7 +24,7 @@ Enfin, l’efficacité globale du système est évaluée à travers plusieurs in
 
 
 
-#### la détection des anomalies
+### la détection des anomalies
 
 Les anomalies environnementales sont modélisées sous forme de 
 zones à radiation élevée (hotspots)
@@ -42,7 +42,7 @@ Les drones signalent la présence de bovins dans les zones de pâturage. Une foi
 
 <br><br>
 
-#### Système de communication et synchronisation
+### Système de communication et synchronisation
 
 Chaque drone est connecté à un ControlCenter qui centralise toutes les informations détectées. Le système respecte les contraintes suivantes :
 - Chaque drone peut transmettre ses données au centre de contrôle depuis sa position (présence de vache, niveau de radiation).
@@ -61,7 +61,7 @@ Le centre de contrôle gère pas directement des conflits potentiels (plusieurs 
 
 
 
-#### Gestion énergétique et contraints
+### Gestion énergétique et contraints
 
 Chaque drone dispose :
 - d’un temps de mission limité (180 secondes)
@@ -80,7 +80,7 @@ Les drones alternent entre :
 
 <br><br>
 
-#### Modélisation de l’évolution de l’environnement
+### Modélisation de l’évolution de l’environnement
 
 Au démarrage de la simulation, 4 à 5 hotspots sont générés aléatoirement dans la matrice. Les vaches apparaissent également de manière aléatoire.
 L’environnement évolue dynamiquement :
@@ -96,7 +96,7 @@ Les vaches ne se multiplient pas : leur nombre reste constant tout au long de la
 <br><br>
 
 
-####  Interface utilisateur
+###  Interface utilisateur
 
 lors de l'execution de main de class SimulationFacade, l'interface console affiche  :
 
@@ -111,13 +111,13 @@ lors de l'execution de main de class SimulationFacade, l'interface console affic
 **Affichage de la carte dans la console**
 Chaque cellule de la grille est représentée par un symbole indiquant son état :
 
-C : bovin 
-c : bovin dans ~
-! : bovin dans X
-X : niveau de radiation interdit
-~ : niveau de radiation limmitée
-D : Drone
-? : celulle non explorée
+C : bovin <br>
+c : bovin dans ~ <br>
+! : bovin dans X <br>
+X : niveau de radiation interdit <br>
+~ : niveau de radiation limmitée <br>
+D : Drone <br>
+? : celulle non explorée <br>
 
 
 ---
@@ -162,11 +162,9 @@ Paramètres restant constants :
 **5-1. indicateurs**
 Plusieurs indicateurs sont calculés :
 -  **1. Coverage　score** :	Pourcentage de cellules explorées.
-<br>
 -  **2. DtectionRate** :  nb de bovins detecte / nb de bovins dans la zone
 -  **3. Rapidity score**	
   Basé sur : le taux de détection, le délai moyen de localisation.
-<br>
 -  **4. Coordination score**	
   Combinaison de : (1 - duplicate_rate) , avoidance_rate.
    Basé sur : 
@@ -175,6 +173,7 @@ Plusieurs indicateurs sont calculés :
 **Avoidance rate**	
   Conflits évités / conflits potentiels.
 
+<br> 
 **5-2. Conception du score global**
 
 L’indicateur de coordination mesure uniquement :
