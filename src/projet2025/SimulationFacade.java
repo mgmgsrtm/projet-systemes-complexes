@@ -74,7 +74,8 @@ public class SimulationFacade {
 	
 	public void printSimulation() {
 		env.printRadLevelMap();
-        env.printMap(drones); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
+        env.printMap(); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
+        cc.printDroneMap(env.width, env.height); // Affichage des positions des drones
         // System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
         System.out.println("totalCowsDetected: " + cc.totalCowsDetected);
         cc.printDroneStatus();

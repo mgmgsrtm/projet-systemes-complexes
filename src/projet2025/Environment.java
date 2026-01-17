@@ -316,45 +316,31 @@ public class Environment {
     	System.out.println();
     }
     
-    public void printMap(Drone[] drones) {
-        System.out.println("=== ENVIRONNEMENT ACTUEL (Class Environment) we can not see new hotspot===");
+    public void printMap() {
+        System.out.println("=== ENVIRONNEMENT ACTUEL (Class Environment) ===");
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-            	boolean droneHere = false;
-            	
-            	//dessiner l'essaim de drones
-            	for (Drone d : drones) {
-            	    if (d.x == x && d.y == y) {
-            	        System.out.print("D|");
-            	        droneHere = true;
-            	        break;
-            	    }
-            	}
-            	if (droneHere) continue;  //éviter d’afficher deux fois dans la même cellule
-            	
             	Cell c = grid[x][y];
+            	
+            	// Afficher uniquement la base, les vaches et les hotspots (pas de drones, pas de points)
 		    	if (c.isBase) {
 		    	    System.out.print("B|");
-//		    	} else if (x == d.x && y == d.y) {
-//                    System.out.print("D|");   // Drone
-                } else if (c.explored) {
-	                System.out.print(".|");   //探索済みはすべて「.」
-	            }else if (c.radiationLevel > RADIATION_FORBIDDEN) {
+	            } else if (c.radiationLevel > RADIATION_FORBIDDEN) {
 		    		if (c.hasCow) {
-		    	        System.out.print("!|"); //cow + forbidden
+		    	        System.out.print("!|"); // vache en zone interdite
 		    	    } else {
-		    	        System.out.print("X|"); //radiation level forbidden
+		    	        System.out.print("X|"); // hotspot interdit
 		    	    }
 		    	} else if (c.radiationLevel > RADIATION_LIMITED) {
 		    	    if (c.hasCow) {
-		    	        System.out.print("c|"); // cow + limited
+		    	        System.out.print("c|"); // vache en zone limitée
 		    	    } else {
-		    	        System.out.print("~|"); //radiation level limited
+		    	        System.out.print("~|"); // zone à radiation limitée
 		    	    }
 		    	} else if (c.hasCow) {
-		    	    System.out.print("C|");   // safe cow
+		    	    System.out.print("C|"); // vache en zone sûre
 		    	} else {
-		    	    System.out.print(" |");
+		    	    System.out.print(" |"); // cellule vide
 		    	}
             }
             System.out.println();
