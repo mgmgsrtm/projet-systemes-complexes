@@ -28,6 +28,7 @@ public class Evaluation {
         double duplicateRate;
         double coordinationScore;
         double avoidanceRate;
+        double globalScore;
 
 
         public Evaluation(){
@@ -45,6 +46,7 @@ public class Evaluation {
             duplicateRate();
             computeAvoidanceRate() ;
             computeCoordination();
+            computeGlobalScore();
         }
 
 
@@ -92,9 +94,15 @@ public class Evaluation {
         }
 
         private void computeCoordination() {
-            double alpha = 0.5; //要検討
-            double beta  = 0.5; //要検討
+            double alpha = 0.9; //要検討
+            double beta  = 0.1; //要検討
             coordinationScore = alpha * (1 - duplicateRate) + beta  * avoidanceRate;
+        }
+        
+        
+        //Global Score = 0.45⋅Rapidity + 0.45⋅Coverage + 0.10⋅Coordination
+        private void computeGlobalScore() {
+        	globalScore = 0.25 * detectionRate + 0.20 * rapidityScore + 0.45 * coverage + 0.10 * coordinationScore;
         }
 
 

@@ -57,17 +57,23 @@ public class SimulationFacade {
             	cc.printGlobalMap();
             }
             
+            // pour une simulation réelle de 5 minutes avec des ticks toutes les secondes
 //          try {
 //               Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
 //           } catch (InterruptedException e) {
 //               e.printStackTrace();
 //           }
-        }
-        System.out.println("l'etat final de GlobalMap:");
-        cc.printGlobalMap();
-        System.out.println(evl.delays);
 
+        }
+        System.out.println();
+        System.out.println("============== l'etat final  ==============");
+        System.out.println();
+        printSimulation();
+        cc.printGlobalMap();
+        
+        System.out.println("=========== Resultat de simulation ==========");
         runEvaluation(env);
+        printEvaluationResults();
 
 	}
 	
@@ -91,50 +97,63 @@ public class SimulationFacade {
 
         // --- Collecte des valeurs ---
         // L'environnement compte lui-même ses cellules explorées/explorables
+    	
+    	
         evl.setExplored(env.countExploredCells());
         evl.setExplorable(env.countExplorableCells());
 
         evl.setTotalCows(env);
         evl.setDetectedCows(env);
-        System.out.println("totalCows = " + evl.totalCows);
-        System.out.println("detectedCows = " + evl.detectedCows);
 
         evl.settotalDetectionTentatives(cc.totalDetectionTentatives);
         evl.setDuplicateDetections(cc.duplicateDetections);
         evl.setTotalCowsDetected(cc.totalCowsDetected);
-        
-        System.out.println("totalDetectionTentative = " + evl.totalDetectionTentatives);
-        System.out.println("nb de duplicate detection = " + evl.duplicateDetections);
-        
+    
 
         evl.setPotentialConflicts(cc.potentialConflicts);
         evl.setAvoidedConflicts(cc.avoidedConflicts);
 
-        // --- 計算 ---
+        // --- calcul des intdicateurs ---
         evl.computeMetrics();
-        System.out.println("le temps moyen de localisation d’une vache : " + evl.meanDelay);
-        
+
+
+    }
+
+
+    private void printEvaluationResults() {
         // Affichage des indicateurs de couverture
-        System.out.println("explored = " + evl.explored);
-        System.out.println("explorable = " + evl.explorable);
-        System.out.println("Coverage = " + evl.coverage);
-        
-        System.out.println("Rapidity score = " + evl.rapidityScore);
-//        System.out.println(evl.duplicateRate + "=" + (double)evl.duplicateDetections+ " / " + evl.totalCowsDetected + "+" + evl.duplicateDetections);
+        System.out.println("explored cell = " + evl.explored);
+        System.out.println("explorable cell= " + evl.explorable);
+        System.out.println("Coverage score= " + evl.coverage);
+        System.out.println();
+
+
+        // Affichage des indicateurs de detection de bovins
+        System.out.println("Le temps qu’il a fallu pour la première détection des vaches");
+        System.out.println(evl.delays);
+        System.out.println("le temps moyen de localisation d’une vache : " + evl.meanDelay);
+        System.out.println("nombre de cows total dans la zone = " + evl.totalCows);
+        System.out.println("detectedCows = " + evl.detectedCows);
+
+        System.out.println("totalDetectionTentative = " + evl.totalDetectionTentatives);
+        System.out.println("nb de duplicate detection = " + evl.duplicateDetections);
+        System.out.println("Detection rate = " + evl.detectionRate);
+        System.out.println("Detection rapidity score = " + evl.rapidityScore);
+        System.out.println();
+
         System.out.println("Duplicate rate = " + evl.duplicateRate);
         System.out.println("Avoidance rate = " + evl.avoidanceRate);
         System.out.println("Coordination score = " + evl.coordinationScore);
-
-
-         // --- 表示 ---
-         //System.out.println(evl);
+        System.out.println();
+        
+        System.out.println("GLOBAL SCORE : " + evl.globalScore);
     }
 	
 	
 	
 	public static void main(String[] args) {
 		
-		SimulationFacade simulation = new SimulationFacade(20, 7, 5);
+		SimulationFacade simulation = new SimulationFacade(10, 7, 5);
 		simulation.startSimulation(300);
 		
 	

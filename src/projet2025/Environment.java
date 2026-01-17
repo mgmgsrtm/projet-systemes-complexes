@@ -28,8 +28,8 @@ public class Environment {
         this.width = width;
         this.height = height;
 
-        this.baseX = 0;
-        this.baseY = 0;
+        this.baseX = 5;
+        this.baseY = 5;
 
         this.cows = new ArrayList<>();
         

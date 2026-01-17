@@ -149,7 +149,7 @@ Différents scénarios sont testés :
 - Variation de la taille de la carte
 (10×10, 20×20, 30×30 – départ en haut à gauche, intervalle 5).
 - Positionnement de la base
-(centre ou coin supérieur gauche – carte 20×20, intervalle 5).
+(centre ou coin supérieur gauche – carte 20×20 30*30, intervalle 5).
 - Variation de l’intervalle de départ des drones
 (0, 5, 10 secondes – départ en haut à gauche).
 
@@ -162,15 +162,19 @@ Tous les autres paramètres restent constants :
 ## 5. Indicateurs d’évaluation
 
 Plusieurs indicateurs sont calculés :
--  **Coverage** :	Pourcentage de cellules explorées.
--  **Rapidity score**	
+-  **1. Coverage　score** :	Pourcentage de cellules explorées.
+<br>
+-  **2. DtectionRate** :  nb de bovins detecte / nb de bovins dans la zone
+-  **3. Rapidity score**	
   Basé sur : le taux de détection, le délai moyen de localisation.
--  **Duplicate rate**	
-  Nombre de détections redondantes / nombre total de détections.
--  **Avoidance rate**	
-  Conflits évités / conflits potentiels.
--  **Coordination score**	
+<br>
+-  **4. Coordination score**	
   Combinaison de : (1 - duplicate_rate) , avoidance_rate.
+   Basé sur : 
+**Duplicate rate**	
+  Nombre de détections redondantes / nombre total de détections.
+**Avoidance rate**	
+  Conflits évités / conflits potentiels.
 ---
 ## 6. Résultats
 
