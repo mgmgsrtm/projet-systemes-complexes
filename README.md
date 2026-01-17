@@ -9,8 +9,8 @@ Système Autonome de Drones Coopératifs pour la Surveillance d’Environnements
 - [done] Actuellement  7 drones partent plusieurs fois et plusieurs drones détectent à répétition la même vache → modifier le comportement afin de ne pas la signaler si elle existe déjà en comparaison avec la globalMap
 - [done] Faire en sorte que les drones partent avec un décalage dans le temps.
 - [done] Pour l’affichage dans l’interface, réorganiser les méthodes print Environnement ainsi que le roll de GlobalCellInfo.
+- [done] déplacement possible des vaches??...depend de supprimer ou non attribut cowHandled
 - <span style="color: red;">Visualiser l’efficacité de l’exploration, les indicateurs et l’évaluation.</span>
-
 
 <span style="color: red;">L’instruction ci-dessous doit être revue pour l’évaluation et la définition des indicateurs selon le PDF reçu du professeur</span>
 
@@ -20,10 +20,6 @@ Concevoir et exécuter différents scénarios de simulation permettant d’éval
 • la rapidité de détection,
 • la coordination entre les drones,
 • l’efficacité du système global.　</span>
-
-##### À l’étude
-- Les nouveaux hotspots qui apparaissent en cours de route ne sont pas visualisés sur la carte
-- (déplacement possible des vaches??...depend de supprimer ou non attribut cowHandled)
 
 ---
 #### Auteurs
@@ -118,9 +114,15 @@ L’environnement est dynamique :
 
 ####  Interface utilisateur
 
-Une interface textuelle en Java permet :
+lors de l'execution de main de class SimulationFacade, l'interface console affiche  :
 
-TODO
+la carte réelle de l’environnement,
+la carte connue du centre de contrôle,
+les positions des drones,
+les niveaux de radiation,
+les événements de détection.
+resultat de simulation : valeurs des indicateurs 
+
 
 
 ---
@@ -142,62 +144,40 @@ TODO
 
 ## 4. Scénarios de simulation
 
-//TODO
+Différents scénarios sont testés :
 
-Différents scénarios sont testés en faisant varier :
+- Variation de la taille de la carte
+(10×10, 20×20, 30×30 – départ en haut à gauche, intervalle 5).
+- Positionnement de la base
+(centre ou coin supérieur gauche – carte 20×20, intervalle 5).
+- Variation de l’intervalle de départ des drones
+(0, 5, 10 secondes – départ en haut à gauche).
 
-- le nombre de drones,
-- l’intervalle de lancement,
-- la fréquence des hotspots,
-- la taille de la carte.
+Tous les autres paramètres restent constants :
+- 7 drones,
+- durée de simulation identique : 5 minutes.
 
 ---
 
 ## 5. Indicateurs d’évaluation
 
-//TODO
-
-#### 5.1 Couverture de la zone
-
-#### 5.2 Rapidité de détection
-
-#### 5.3 Coordination entre drones
-
-- Taux de redondance (explorations multiples)
-
+Plusieurs indicateurs sont calculés :
+-  **Coverage** :	Pourcentage de cellules explorées.
+-  **Rapidity score**	
+  Basé sur : le taux de détection, le délai moyen de localisation.
+-  **Duplicate rate**	
+  Nombre de détections redondantes / nombre total de détections.
+-  **Avoidance rate**	
+  Conflits évités / conflits potentiels.
+-  **Coordination score**	
+  Combinaison de : (1 - duplicate_rate) , avoidance_rate.
 ---
-
-## 6. Lancement de la simulation
-
-//TODO
-
-```
-javac projet2025/*.java
-java projet2025.SimulationFacade
-```
----
-
-## 7. Paramètres
-
-Dans main() :
-
-```
-new SimulationFacade(x, 7, y);
-```
-|Paramètre | Description|
-|--------|------|
-|x |taille de la carte|
-|7 | nombre de drones |
-|y |intervalle de lancement |
-
----
-
-## 8. Résultats
+## 6. Résultats
 
 //TODO
 
 ---
 
-## 9. Améliorations futures
+## 7. Améliorations futures
 
 //TODO

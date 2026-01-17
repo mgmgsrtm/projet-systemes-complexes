@@ -12,6 +12,8 @@ public class Evaluation {
         int totalCows;
         int detectedCows;
         List<Integer> delays;
+        double meanDelay;
+        double detectionRate;
 
         int totalDetectionTentatives;
         int duplicateDetections;
@@ -38,6 +40,7 @@ public class Evaluation {
 
         public void computeMetrics() {
             computeCoverage();
+            computeMeanDelay ();
             computeRapidity();
             duplicateRate();
             computeAvoidanceRate() ;
@@ -52,24 +55,18 @@ public class Evaluation {
             //coverage = xxxx;
         }
 
+        private void computeMeanDelay () {
+        	detectionRate = (double) detectedCows / totalCows;
+        	double sum = 0;
+        	 for (int d : delays) {
+        		 sum += d;
+        	 }
+        	 meanDelay = sum / (double)(delays.size());
+        }
 
 
         private void computeRapidity() { 
-        	//rapidity_score= detection_rate / mean_delay 
-        	//avec :
-        	//detection_rate = detected_cows / total_cows
-        	//mean_delay = Σ delay / detected_cows 
-        	
-        	// detection_rate
-            double detectionRate = (double) detectedCows / totalCows;
-            
-            // mean_delay
-            double sum = 0;
-            for (int d : delays) {
-                sum += d;
-            }
-            double meanDelay = sum / delays.size();
-            
+        	computeMeanDelay () ;
             // rapidity_score
             rapidityScore = 100*(detectionRate / meanDelay);
         }

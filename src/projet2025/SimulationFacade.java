@@ -100,14 +100,17 @@ public class SimulationFacade {
         evl.settotalDetectionTentatives(cc.totalDetectionTentatives);
         evl.setDuplicateDetections(cc.duplicateDetections);
         evl.setTotalCowsDetected(cc.totalCowsDetected);
+        
         System.out.println("totalDetectionTentative = " + evl.totalDetectionTentatives);
         System.out.println("nb de duplicate detection = " + evl.duplicateDetections);
+        
 
         evl.setPotentialConflicts(cc.potentialConflicts);
         evl.setAvoidedConflicts(cc.avoidedConflicts);
 
         // --- 計算 ---
         evl.computeMetrics();
+        System.out.println("le temps moyen de localisation d’une vache : " + evl.meanDelay);
         System.out.println("Rapidity score = " + evl.rapidityScore);
 //        System.out.println(evl.duplicateRate + "=" + (double)evl.duplicateDetections+ " / " + evl.totalCowsDetected + "+" + evl.duplicateDetections);
         System.out.println("Duplicate rate = " + evl.duplicateRate);
@@ -123,7 +126,7 @@ public class SimulationFacade {
 	
 	public static void main(String[] args) {
 		
-		SimulationFacade simulation = new SimulationFacade(20, 7, 3);
+		SimulationFacade simulation = new SimulationFacade(20, 7, 5);
 		simulation.startSimulation(300);
 		
 	
