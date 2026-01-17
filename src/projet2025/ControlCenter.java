@@ -135,4 +135,35 @@ public class ControlCenter {
         System.out.println("=== GLOBAL MAP (Control Center) ===");
         System.out.println();
     }
+    
+    /**
+     * Affiche une carte montrant uniquement les positions des drones
+     * @param width largeur de la grille
+     * @param height hauteur de la grille
+     */
+    public void printDroneMap(int width, int height) {
+        System.out.println("=== DRONE POSITIONS (Control Center) ===");
+        
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                boolean droneHere = false;
+                
+                // Vérifier si un drone est présent à cette position
+                for (Drone d : drones) {
+                    if (d.getX() == x && d.getY() == y) {
+                        System.out.print("D|"); // Drone présent
+                        droneHere = true;
+                        break;
+                    }
+                }
+                
+                if (!droneHere) {
+                    System.out.print(" |"); // Cellule vide
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("=== DRONE POSITIONS ===");
+        System.out.println();
+    }
 }
