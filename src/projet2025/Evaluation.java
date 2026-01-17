@@ -49,10 +49,12 @@ public class Evaluation {
 
 
         private void computeCoverage() {
-            //TODO FOR ALEX
-            
-            // objectif final est donner
-            //coverage = xxxx;
+            // Calculer le taux de couverture
+            if (explorable == 0) {
+                coverage = 0; // Éviter division par zéro
+                return;
+            }
+            coverage = (double) explored / (double) explorable;
         }
 
         private void computeMeanDelay () {
@@ -107,12 +109,20 @@ public class Evaluation {
 
         //setters
 
-        public void setExplored(){
-
+        /**
+         * Définir le nombre de cellules explorées
+         * @param count nombre de cellules explorées
+         */
+        public void setExplored(int count){
+            this.explored = count;
         }
         
-        public void setExplorable(){
-
+        /**
+         * Définir le nombre de cellules explorables
+         * @param count nombre de cellules accessibles
+         */
+        public void setExplorable(int count){
+            this.explorable = count;
         }
         
         public void setTotalCows(Environment env){
@@ -150,4 +160,3 @@ public class Evaluation {
         }
 
     }
-

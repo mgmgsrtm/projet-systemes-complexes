@@ -88,9 +88,10 @@ public class SimulationFacade {
 
     private void runEvaluation(Environment env) {
 
-    //     // --- 値の収集 ---
-    //     evl.setExplored();
-    //     evl.setExplorable();
+        // --- Collecte des valeurs ---
+        // L'environnement compte lui-même ses cellules explorées/explorables
+        evl.setExplored(env.countExploredCells());
+        evl.setExplorable(env.countExplorableCells());
 
         evl.setTotalCows(env);
         evl.setDetectedCows(env);
@@ -111,6 +112,12 @@ public class SimulationFacade {
         // --- 計算 ---
         evl.computeMetrics();
         System.out.println("le temps moyen de localisation d’une vache : " + evl.meanDelay);
+        
+        // Affichage des indicateurs de couverture
+        System.out.println("explored = " + evl.explored);
+        System.out.println("explorable = " + evl.explorable);
+        System.out.println("Coverage = " + evl.coverage);
+        
         System.out.println("Rapidity score = " + evl.rapidityScore);
 //        System.out.println(evl.duplicateRate + "=" + (double)evl.duplicateDetections+ " / " + evl.totalCowsDetected + "+" + evl.duplicateDetections);
         System.out.println("Duplicate rate = " + evl.duplicateRate);

@@ -244,6 +244,42 @@ public class Environment {
 	}
 
 
+    // Méthodes pour l'évaluation - comptage des cellules
+    
+    /**
+     * Compte le nombre de cellules explorées dans la grille
+     * @return nombre de cellules avec explored = true
+     */
+    public int countExploredCells() {
+        int count = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (grid[x][y].explored) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    
+    /**
+     * Compte le nombre de cellules explorables (accessibles)
+     * Une cellule est explorable si son niveau de radiation ≤ RADIATION_FORBIDDEN
+     * @return nombre de cellules accessibles
+     */
+    public int countExplorableCells() {
+        int count = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (grid[x][y].radiationLevel <= RADIATION_FORBIDDEN) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
 
     public void printEnvironment() {
 	    for (int y = 0; y < height; y++) {
