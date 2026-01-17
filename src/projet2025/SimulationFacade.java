@@ -1,5 +1,8 @@
 package projet2025;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimulationFacade {
 	
 	Environment env;
@@ -79,7 +82,7 @@ public class SimulationFacade {
 	
 	
 	public void printSimulation() {
-		env.printRadLevelMap();
+		//env.printRadLevelMap();
         env.printMap(); // Affichage global de l’environnement (vue observateur, non accessible aux drones)
         cc.printDroneMap(env.width, env.height); // Affichage des positions des drones
         // System.out.println("totalCellsExplored: " + cc.totalCellsExplored);
@@ -148,15 +151,53 @@ public class SimulationFacade {
         
         System.out.println("GLOBAL SCORE : " + evl.globalScore);
     }
-	
-	
-	
-	public static void main(String[] args) {
-		
-		SimulationFacade simulation = new SimulationFacade(10, 7, 5);
-		simulation.startSimulation(300);
-		
-	
+
+    public double getGlobalScore() {
+        return evl.globalScore;
     }
+	
+    
+	//main No.1
+	// Une exécution de la simulation
+    
+	// public static void main(String[] args) {
+		
+	// 	SimulationFacade simulation = new SimulationFacade(10, 7, 5);
+	// 	simulation.startSimulation(300);
+		
+	
+    // }
+
+    
+    
+    
+    //main No.2
+    //Simulation répétée 20 fois pour l’évaluation
+
+    public static void main(String[] args) {
+
+        int RUNS = 20;
+        double sum = 0;
+        List<Double> results = new ArrayList<>();
+
+        for (int i = 1; i <= RUNS; i++) {
+
+            SimulationFacade sim =
+                new SimulationFacade(30, 7, 0);
+
+            sim.startSimulation(300);   // 実行
+            double score = sim.getGlobalScore();  
+            results.add(score);
+            sum += score;
+        }
+
+        //20回実行した平均を計算
+        double mean = sum / RUNS; 
+        System.out.println();
+        System.out.println("=========== GLOBAL RESULTS ===========");
+        System.out.println("All scores = " + results);
+        System.out.println("Mean global score = " + mean);
+    }
+
 
 }
