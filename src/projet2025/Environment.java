@@ -276,7 +276,7 @@ public class Environment {
                 }
             }
         }
-        return count;
+        return count-1; //sauf celulle base(controlcenter)
     }
 
 
