@@ -115,9 +115,9 @@ C : bovin <br>
 c : bovin dans ~ <br>
 ! : bovin dans X <br>
 X : niveau de radiation interdit <br>
-~ : niveau de radiation limmitée <br>
+~ : niveau de radiation limitée <br>
 D : Drone <br>
-? : celulle non explorée <br>
+? : cellule non explorée <br>
 
 <br>
 
@@ -175,6 +175,8 @@ centre ou coin supérieur gauche
 Paramètres restant constants :
 - 7 drones,
 - durée de simulation identique : 5 minutes.
+- période de demi-vie : 180 secondes
+
 
 ---
 
