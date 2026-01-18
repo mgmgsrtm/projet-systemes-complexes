@@ -288,6 +288,8 @@ public class Environment {
     }
     
     public void printRadLevelMap() {
+    	System.out.println();
+    	System.out.println("====== Radiation Level Map ======");
     	for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
             	System.out.print(String.format("%.2f", grid[x][y].radiationLevel) + " ");

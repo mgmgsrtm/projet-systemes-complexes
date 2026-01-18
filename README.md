@@ -189,10 +189,11 @@ Plusieurs indicateurs sont calculés :
 -  **4. Coordination score**	
   Combinaison de : (1 - duplicate_rate) , avoidance_rate.
    Basé sur : 
-**Duplicate rate**	
-  Nombre de détections redondantes / nombre total de détections.
-**Avoidance rate**	
-  Conflits évités / conflits potentiels.
+      **Duplicate rate**	
+         Nombre de détections redondantes / nombre total de détections.
+
+      **Avoidance rate**	
+          Conflits évités / conflits potentiels.
 
 
 
@@ -278,7 +279,7 @@ L’environnement influence directement les agents :
 En retour, les drones impactent l’environnement en signalant les vaches au centre de contrôle, ce qui permet une mise à jour différée de la carte et prépare de futures opérations de secours. Il existe donc une interaction bidirectionnelle agent–environnement.
 
 Cependant, plusieurs limites subsistent :
-Les interactions entre drones restent faibles : aucun comportement collectif de type boids n’est implémenté.
+Les interactions entre drones restent faibles : aucun comportement collectif n’est implémenté.
 La mémoire (carte globale) n’est pas exploitée de manière stratégique : les drones ne ciblent pas spécifiquement les zones non explorées ou dangereuses, ce qui réduit leur adaptabilité.
 
 Le système réussit à reproduir certains mécanismes de la complexité, mais de façon encore incomplète. Des améliorations sont nécessaires pour renforcer l’émergence et l’auto-organisation, notamment:

@@ -72,6 +72,7 @@ public class SimulationFacade {
         System.out.println("============== l'etat final  ==============");
         System.out.println();
         printSimulation();
+        env.printRadLevelMap();
         cc.printGlobalMap();
         
         System.out.println("=========== Resultat de simulation ==========");
@@ -90,7 +91,7 @@ public class SimulationFacade {
         cc.printDroneStatus();
         System.out.println(cc.eventLog);
         for (Drone d :drones) {
-        	System.out.println("time: " + d.missionTime);
+        	System.out.println("time since take-off: " + d.missionTime);
         }
 
 	}
@@ -158,7 +159,7 @@ public class SimulationFacade {
 	
     
 	//main No.1
-	// Une exécution de la simulation
+	//Une exécution de la simulation
     
 	// public static void main(String[] args) {
 		
@@ -176,7 +177,7 @@ public class SimulationFacade {
 
     public static void main(String[] args) {
 
-        int RUNS = 20;
+        int RUNS = 20; //dans notre projet la moyenne est calculée sur 20 simulations.
         double sum = 0;
         List<Double> results = new ArrayList<>();
 
@@ -185,13 +186,13 @@ public class SimulationFacade {
             SimulationFacade sim =
                 new SimulationFacade(30, 7, 0);
 
-            sim.startSimulation(300);   // 実行
+            sim.startSimulation(300);   // execution d'une simulation
             double score = sim.getGlobalScore();  
             results.add(score);
             sum += score;
         }
 
-        //20回実行した平均を計算
+        //la moyenne de global scores prosuits apres 20 simulations 
         double mean = sum / RUNS; 
         System.out.println();
         System.out.println("=========== GLOBAL RESULTS ===========");
