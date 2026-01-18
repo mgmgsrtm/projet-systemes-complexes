@@ -11,8 +11,6 @@ public class Cell {
     boolean hasCow;       // Présence de bovins
     boolean cowHandled;;     // Bovins déjà pris en charge
    
-    boolean hasDebris;       //Présence de débris (pour l’interface utilisateur, pour la prise de décision au centre)
-    
     boolean isBase; 
     
     
@@ -30,7 +28,6 @@ public class Cell {
     
         this.cowHandled = false;
 
-        this.hasDebris = false;
     }
 
 
@@ -40,7 +37,6 @@ public class Cell {
             + " rad=" + String.format("%.2f", radiationLevel)
             + " cow=" + hasCow
             + " handled=" + cowHandled
-            + " debris=" + hasDebris
             + " explored=" + explored;
     }
 

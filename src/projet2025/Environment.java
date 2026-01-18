@@ -76,7 +76,6 @@ public class Environment {
 
     //radiationLevel　
     //hasCow
-    //hasDebris
     //emplacement initial
     public void initializeEnvironment() {
         for (int x = 0; x < width; x++) { // d'abord initialiser entierement en radiationLevel au dessous de 1 
@@ -84,7 +83,6 @@ public class Environment {
                 Cell c = grid[x][y];
                 if (c.isBase) continue; 
                 c.radiationLevel = 0.00; // 0.0 ～ 1.0
-                c.hasDebris = Math.random() < 0.1; // cell a 10% de possibilite d'avoir debris
                 // c.hasCow = Math.random() < 0.05;  //　cell a 5% de possibilite d'avoir un cow
                 c.cowHandled = false;
             }
@@ -141,7 +139,6 @@ public class Environment {
         base.isBase = true;
         base.radiationLevel = 0.0;
         base.hasCow = false;
-        base.hasDebris = false;
         base.explored = true;
     }
 

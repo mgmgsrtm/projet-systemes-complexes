@@ -98,7 +98,7 @@ Les vaches ne se multiplient pas : leur nombre reste constant tout au long de la
 
 ###  Interface utilisateur
 
-lors de l'execution de **main** de class SimulationFacade, l'interface console affiche  :
+lors de l'execution de **main** de class **SimulationFacade**, l'interface console affiche  :
 
 - la carte réelle de l’environnement
 - la carte connue du centre de contrôle
@@ -119,6 +119,27 @@ X : niveau de radiation interdit <br>
 D : Drone <br>
 ? : celulle non explorée <br>
 
+<br>
+
+**⚠ Deux versions de la méthode main**
+
+Par défaut, main No.1 est commenté afin de faciliter l’évaluation, qui nécessite 20 simulations. Si vous souhaitez effectuer une simulation unique, veuillez commenter main No.2 et exécuter ｍain No.1.
+
+Si vous souhaitez observer l’écoulement du temps en considérant 1 tick = 1 seconde, veuillez décommenter le code ci-dessous dans la méthode **startSimulation** de la classe SimulationFacade :
+
+```
+// pour une simulation réelle de 5 minutes avec des ticks toutes les secondes
+try {
+    Thread.sleep(1000); // Chaque itération de la boucle correspond à une seconde de temps simulé
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+```
+
+Les paramètres utilisés pour l'evaluation peuvent être définis comme paramètres du constructeur de SimulationFacade.
+Cependant, pour modifier la position de base(controlcenter)de décollage et d’atterrissage des drones, il est nécessaire de changer manuellement les valeurs BaseX et BaseY dans la classe Drone.
+
+<br>
 
 ---
 
