@@ -1,5 +1,5 @@
 # Projet IA pour les Systèmes Complexes
-MIASHS 2025
+MIASHS 2025-2026
 
 Système Autonome de Drones Coopératifs pour la Surveillance d’Environnements Sensibles
 
@@ -12,7 +12,7 @@ Haruka MIURA, Aleksandra BASANGOVA
 
 ## 1. Description de Projet
 
-Ce projet consiste à développer un système de simulation multi-drones destiné à la surveillance d’une zone contaminée. Sept drones autonomes explorent un environnement représenté sous forme de grille afin de détecter des anomalies (vaches laissés), cartographier les niveaux de radiation et transmettre les informations à un centre de contrôle.
+Ce projet consiste à développer un système de simulation multi-drones destiné à la surveillance d’une zone contaminée. Sept drones autonomes explorent un environnement représenté sous forme de grille afin de détecter des anomalies (vaches laissés), cartographier les niveaux de radiation et transmettre les informations à un centre de contrôle.
 L’objectif principal de drone est de localiser un maximum de vaches et d’enregistrer leurs positions avec la plus grande précision possible, tout en évitant les zones fortement irradiées. Ces informations serviront à faciliter de futures opérations de secours menées par des humains ou des machines.
 Une autre mission essentielle consiste à surveiller l’évolution de l’environnement, notamment les evolution de radiation dues à la demi-vie radioactive et à l’apparition de nouveaux hotspots, afin de maintenir une cartographie toujours à jour.
 Enfin, l’efficacité globale du système est évaluée à travers plusieurs indicateurs de performance tels que la couverture de la zone, la rapidité de détection et la coordination entre les drones.
@@ -24,7 +24,7 @@ Enfin, l’efficacité globale du système est évaluée à travers plusieurs in
 
 
 
-### la détection des anomalies
+### La détection des anomalies
 
 Les anomalies environnementales sont modélisées sous forme de 
 zones à radiation élevée (hotspots)
@@ -32,7 +32,7 @@ il y a trois niveaux de danger :
 		- zone sûre
 		- zone à accès limité
 		- zone interdite
-Les anomalies sont également représentées par des objets de type Cow, placés aléatoirement dans l’environnement. Lorsqu’un drone entre dans une cellule contenant une vache, il passe en mode ANALYSING pendant 10 secondes afin de confirmer la détection.
+Les anomalies sont également représentées par des objets de type Cow, placés aléatoirement dans l’environnement. Lorsqu’un drone entre dans une cellule contenant une vache, il passe en mode ANALYSING pendant 10 secondes afin de confirmer la détection.
 Le système permet :
 - de détecter la présence d’anomalies,
 - d’estimer leur intensité (niveau de radiation),
@@ -98,7 +98,7 @@ Les vaches ne se multiplient pas : leur nombre reste constant tout au long de la
 
 ###  Interface utilisateur
 
-lors de l'execution de main de class SimulationFacade, l'interface console affiche  :
+lors de l'execution de **main** de class SimulationFacade, l'interface console affiche  :
 
 - la carte réelle de l’environnement
 - la carte connue du centre de contrôle
@@ -173,7 +173,8 @@ Plusieurs indicateurs sont calculés :
 **Avoidance rate**	
   Conflits évités / conflits potentiels.
 
-<br> 
+
+
 **5-2. Conception du score global**
 
 L’indicateur de coordination mesure uniquement :
@@ -191,6 +192,8 @@ Ainsi, quelle que soit la configuration, il atteint presque toujours une valeur 
 
 ---
 ## 6. Résultats
+
+Pour chaque scénario, vingt simulations ont été exécutées afin de calculer la moyenne du global score et comparer les performances.
 
 | Carte | Base | Intervalle | Résultat moyen (20 exécutions) |
 |-------|------|------------|---------------------------------|
@@ -218,11 +221,11 @@ Carte 10×10 est trop petite pour une évaluation pertinente :
 - exploration quasi immédiate,
 - détection très rapide,
 Par consequence nous avons meanDelay extrêmement faible et rapidityScore élevé.
-Le facteur ×100 dans la formule peut rendre la rapidité trop dominante. La formule doit avoir besoin d’amélioration.
+Le facteur ×100 dans la formule peut rendre la **rapidité trop dominante**. La formule doit avoir besoin d’amélioration.
 
-Tendances générales observées (20×20, 30×30)
+**Tendances générales observées (20×20, 30×30)**
 - Plus la carte est grande, plus le score diminue → logique (exploration plus difficile)
-- Base au centre > base dans un coin → plus efficace
+- Base (consrol center) au centre > base dans un coin → plus efficace
 - Intervalle : 0 > 5 > 10→ le départ simultané est parfois plus efficace car l’algorithme évite seulement les collisions
 
 **Carte 20×20**
@@ -230,7 +233,7 @@ Résultats très influencés par :
 - le nombre de vaches
 - nombre et position des hotspots aléatoires
 
-La base centrale donne de meilleurs résultats et moins de variations.
+La base (control center) centrale donne de meilleurs résultats et moins de variations.
 
 **Carte 30×30**
 La position de la base devient déterminante.
@@ -240,6 +243,33 @@ Moins de doublons car :les vaches se déplacent, elles sont rarement redétecté
 
 ---
 
-## 7. Améliorations futures
+## 7. Conclusion
 
-//TODO
+Ce projet permet de reproduire partiellement plusieurs caractéristiques fondamentales des systèmes complexes.
+Il met en scène plusieurs drones (bien que leur nombre reste limité) dotés de règles comportementales simples et réactives.
+Actuellement, les drones suivent des règles élémentaires :
+ -ils se déplacent vers des cellules non explorées,
+ -leur comportement repose sur un nombre fini d’états (WAITING, MOVING, ANALYSING, etc.),
+ils n’interagissent qu’avec leur voisinage immédiat via la méthode getNeighbors() afin d’éviter les collisions.
+L’environnement influence directement les agents :
+ -la radiation limite leurs déplacements,
+ -le déplacement des vaches modifie les conditions de détection.
+En retour, les drones impactent l’environnement en signalant les vaches au centre de contrôle, ce qui permet une mise à jour différée de la carte et prépare de futures opérations de secours. Il existe donc une interaction bidirectionnelle agent–environnement.
+
+Cependant, plusieurs limites subsistent :
+Les interactions entre drones restent faibles : aucun comportement collectif de type boids n’est implémenté.
+La mémoire (carte globale) n’est pas exploitée de manière stratégique : les drones ne ciblent pas spécifiquement les zones non explorées ou dangereuses, ce qui réduit leur adaptabilité.
+
+Le système réussit à reproduir certains mécanismes de la complexité, mais de façon encore incomplète. Des améliorations sont nécessaires pour renforcer l’émergence et l’auto-organisation, notamment:
+
+1. Si l’on souhaite privilégier les interactions locales, l’ajout de capteurs directs aurait été pertinent.
+À la place, la détection des drones voisins et les choix d’évitement sont gérés côté drone.
+
+2. La carte globale conserve les anciennes positions des vaches, même après leur déplacement, ce qui crée une incohérence.
+
+3. Les drones redémarrent avec une carte à jour, mais ne l’exploitent pas pour cibler les zones encore inconnues.
+L’algorithme de déplacement pourrait être amélioré.
+
+4. Les drones mesurent la radiation des cellules voisines, mais les zones fortement irradiées (centre des hotspots) ne sont jamais enregistrées dans la carte globale, ce qui pose un problème de cohérence.
+
+5. Le retour à la base (RETURNING) est simplifié : seul l’état change, sans déplacement réel dans l’environnement. Une gestion de l’altitude pourrait faciliter une implémentation plus réaliste.
