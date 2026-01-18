@@ -189,6 +189,7 @@ Plusieurs indicateurs sont calculés :
 -  **4. Coordination score**	
   Combinaison de : (1 - duplicate_rate) , avoidance_rate.
    Basé sur : 
+   
       **Duplicate rate**	
          Nombre de détections redondantes / nombre total de détections.
 

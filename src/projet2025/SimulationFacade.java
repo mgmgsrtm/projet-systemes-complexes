@@ -158,12 +158,15 @@ public class SimulationFacade {
     }
 	
     
+
+
+    
 	//main No.1
 	//Une exécution de la simulation
     
 	// public static void main(String[] args) {
 		
-	// 	SimulationFacade simulation = new SimulationFacade(10, 7, 5);
+	// 	SimulationFacade simulation = new SimulationFacade(20, 7, 5); //　parametres(Taille de la matrice, nombre de drones, intervalle de départ des drones)
 	// 	simulation.startSimulation(300);
 		
 	
@@ -184,7 +187,7 @@ public class SimulationFacade {
         for (int i = 1; i <= RUNS; i++) {
 
             SimulationFacade sim =
-                new SimulationFacade(30, 7, 0);
+                new SimulationFacade(20, 7, 5); //　parametres(Taille de la matrice, nombre de drones, intervalle de départ des drones)
 
             sim.startSimulation(300);   // execution d'une simulation
             double score = sim.getGlobalScore();  

@@ -172,12 +172,11 @@ public class Environment {
 
         // --- apparition nouveau hotspot possible ---
         if (timeSinceLastHotspot >= 60) { // apres 60 secondes
-            if (Math.random() < 0.75) {    // 75% de chance
+            if (Math.random() < 0.75) {    // avoir 1 nouveau hotspot pour 75% de chance
                 generateHotspot();
                 System.out.println("New hotspot!");
             }
             timeSinceLastHotspot = 0;
-            // ちょうどいる cell に hotspot が出現したら？後で「緊急退避」を追加する
         }
 
         currentTime++;  // time for cow detection delay

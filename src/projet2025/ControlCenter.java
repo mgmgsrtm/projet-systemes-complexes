@@ -57,11 +57,11 @@ public class ControlCenter {
         if (cow == null) return;
         totalDetectionTentatives++;
 
-        if (!detectedCowIds.contains(cow.id)) {
+        if (!detectedCowIds.contains(cow.id)) { // premiere detection
             detectedCowIds.add(cow.id);
             globalMap[x][y].hasCow = true;
             totalCowsDetected++;  
-            System.out.println(detectedCowIds); // 初回のみ
+            System.out.println(detectedCowIds); 
             boolean dangerous = radiation > 1;
             eventLog.add(
                 "Drone " + droneId +
@@ -74,7 +74,7 @@ public class ControlCenter {
             // totalCowsDetected++;
         	duplicateDetections++;
         }
-        return; // この牛はすでに記録済みで移動なし
+        return; // vache est déjà enregistrée dans Globalmap et n’a pas été déplacée.
     }
     
     
@@ -83,7 +83,7 @@ public class ControlCenter {
 
         for (int x = 0; x < globalMap.length; x++) {
             for (int y = 0; y < globalMap[0].length; y++) {
-                copy[x][y] = copy[x][y] = new GlobalCellInfo(globalMap[x][y]); //生きた参照でなく、スナップショット
+                copy[x][y] = copy[x][y] = new GlobalCellInfo(globalMap[x][y]); //drones n'ont pas de capture d'ecrin, pas de référence à la carte originale
             }
         }
         return copy;

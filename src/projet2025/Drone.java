@@ -113,7 +113,7 @@ public class Drone {
 	        if (analyseRemainingTime <= 0) {
 	            finishAnalyse();
 	        }
-	        return; // analyse中は移動しない
+	        return; // pas de deplacement pendant l'analyse
 	    }
 		
 		//avancer ver une cellule non explorée
@@ -187,7 +187,7 @@ public class Drone {
 			}
 
 	    }
-	    // controlcenterに座標、放射能、座標を即時共有
+	    // transmission des coordonnées et des données de radioactivité au cc
 	    controlCenter.updateCellInfo(x, y, c.radiationLevel);
 	    
 	    state = DroneState.MOVING;
@@ -231,7 +231,6 @@ public class Drone {
 	}
 	
 	 private void returnToBase() {
-		 //TODO
 		 this.x = environment.baseX; //pisitionnement initialle est base
 	     this.y = environment.baseY;
 	     chargingTime = 0; 

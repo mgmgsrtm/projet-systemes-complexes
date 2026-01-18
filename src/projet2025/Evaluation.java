@@ -22,7 +22,7 @@ public class Evaluation {
         int potentialConflicts;
         int avoidedConflicts;
 
-        // --- computed metrics ---
+        // --- indicateurs à calculer ---
         double coverage;
         double rapidityScore;
         double duplicateRate;
@@ -36,6 +36,8 @@ public class Evaluation {
             rapidityScore=0;
             duplicateRate=0;
             coordinationScore=0;
+            avoidanceRate=0;
+            globalScore=0;
             delays = new ArrayList<>();
         }
 
